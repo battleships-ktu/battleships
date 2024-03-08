@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="Battleships"
-config/features=PackedStringArray("4.2", "Mobile")
+run/main_scene="res://menus/menu.tscn"
+config/features=PackedStringArray("4.1", "Mobile")
 config/icon="res://icon.svg"
 
 [rendering]
