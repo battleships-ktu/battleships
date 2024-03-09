@@ -41,18 +41,17 @@ grow_vertical = 2
 texture = SubResource("GradientTexture2D_gx2ju")
 
 [node name="Menu" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 0
+offset_left = 120.0
+offset_top = 80.0
+offset_right = 1032.0
+offset_bottom = 568.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Menu"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_vertical = 0
 alignment = 1
 
 [node name="Logo" type="TextureRect" parent="Menu/VBoxContainer"]
@@ -61,70 +60,69 @@ size_flags_vertical = 2
 texture = ExtResource("2_6aj56")
 expand_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Menu/VBoxContainer"]
+[node name="centerrow" type="HBoxContainer" parent="Menu/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+localize_numeral_system = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/VBoxContainer/centerrow"]
+layout_mode = 2
 theme = ExtResource("1_3ieb5")
 theme_override_constants/separation = 8
 
-[node name="Seperator" type="Control" parent="Menu/VBoxContainer/VBoxContainer"]
+[node name="Seperator" type="Control" parent="Menu/VBoxContainer/centerrow/VBoxContainer"]
 layout_mode = 2
 
-[node name="Start game" type="Button" parent="Menu/VBoxContainer/VBoxContainer"]
+[node name="Start game" type="Button" parent="Menu/VBoxContainer/centerrow/VBoxContainer"]
 custom_minimum_size = Vector2(120, 32)
 layout_mode = 2
 text = "Start game"
 
-[node name="Options" type="Button" parent="Menu/VBoxContainer/VBoxContainer"]
+[node name="Options" type="Button" parent="Menu/VBoxContainer/centerrow/VBoxContainer"]
 custom_minimum_size = Vector2(120, 32)
 layout_mode = 2
 text = "Options"
 
-[node name="Exit" type="Button" parent="Menu/VBoxContainer/VBoxContainer"]
+[node name="Exit" type="Button" parent="Menu/VBoxContainer/centerrow/VBoxContainer"]
 custom_minimum_size = Vector2(120, 32)
 layout_mode = 2
 text = "Exit"
 
-[node name="Options" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="Menu2" type="MarginContainer" parent="."]
 offset_left = 1152.0
-offset_right = 1152.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_top = 80.0
+offset_right = 2064.0
+offset_bottom = 568.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Options"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu2"]
 custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_vertical = 0
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Options/VBoxContainer"]
+[node name="centerrow" type="HBoxContainer" parent="Menu2/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
+localize_numeral_system = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu2/VBoxContainer/centerrow"]
+layout_mode = 2
 theme = ExtResource("1_3ieb5")
 theme_override_constants/separation = 8
 
-[node name="master_label" type="Label" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Mater volume"
-
-[node name="Volume_slider" type="HSlider" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Back" type="Button" parent="Options/VBoxContainer/VBoxContainer"]
+[node name="Back" type="Button" parent="Menu2/VBoxContainer/centerrow/VBoxContainer"]
 custom_minimum_size = Vector2(120, 32)
 layout_mode = 2
 text = "Back
 "
 
-[connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Start game" to="." method="_on_start_game_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
-[connection signal="pressed" from="Options/VBoxContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/centerrow/VBoxContainer/Start game" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/centerrow/VBoxContainer/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/centerrow/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Menu2/VBoxContainer/centerrow/VBoxContainer/Back" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="Menu2/VBoxContainer/centerrow/VBoxContainer/Back" to="." method="_on_back_pressed"]

@@ -1,7 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://d1mt7bvvnske6"]
+[gd_scene load_steps=3 format=3 uid="uid://hgx27s2go616"]
 
-[ext_resource type="Script" path="res://menus/options_menu.gd" id="1_7ppk1"]
 [ext_resource type="Theme" uid="uid://bmaaet3opnwik" path="res://ui/themes/bluesea.tres" id="1_tl027"]
+
+[sub_resource type="GDScript" id="GDScript_b2y4p"]
+script/source = "extends Control
+
+
+
+@export
+var bus_name: String
+
+var bus_index: int
+
+func _ready() -> void:
+	bus_index = AudioServer.get_bus_index(bus_name)
+		
+
+func _on_back_pressed():
+	get_tree().change_scene_to_file(\"res://menus/menu.tscn\")
+"
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -11,7 +28,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_tl027")
-script = ExtResource("1_7ppk1")
+script = SubResource("GDScript_b2y4p")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -29,15 +46,6 @@ grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-
-[node name="master_label" type="Label" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Mater volume"
-
-[node name="Volume_slider" type="HSlider" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-max_value = 1.0
-step = 0.001
 
 [node name="Back" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 32)
