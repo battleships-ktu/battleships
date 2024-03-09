@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca0mfyil4am0c"]
+
+[ext_resource type="Texture2D" uid="uid://dmdgq0ljabeaw" path="res://assets/board/oceangrid_final.png" id="1_lxn1r"]
+[ext_resource type="Texture2D" uid="uid://eugsrff58h2k" path="res://assets/board/radargrid_final.png" id="2_jkn2q"]
+
+[node name="GameBoard" type="Node2D"]
+
+[node name="OceangridFinal" type="Sprite2D" parent="."]
+position = Vector2(304, 324)
+scale = Vector2(1.53216, 1.53216)
+texture = ExtResource("1_lxn1r")
+
+[node name="RadargridFinal" type="Sprite2D" parent="."]
+position = Vector2(848, 325)
+scale = Vector2(1.53509, 1.53509)
+texture = ExtResource("2_jkn2q")
