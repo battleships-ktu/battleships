@@ -6,11 +6,11 @@
 [node name="GameBoard" type="Node2D"]
 
 [node name="OceangridFinal" type="Sprite2D" parent="."]
-position = Vector2(304, 324)
-scale = Vector2(1.53216, 1.53216)
+position = Vector2(280.125, 767.875)
+scale = Vector2(1.3867, 1.3867)
 texture = ExtResource("1_lxn1r")
 
 [node name="RadargridFinal" type="Sprite2D" parent="."]
-position = Vector2(848, 325)
-scale = Vector2(1.53509, 1.53509)
+position = Vector2(281, 268)
+scale = Vector2(1.39401, 1.39401)
 texture = ExtResource("2_jkn2q")
