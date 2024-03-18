@@ -23,5 +23,6 @@ offset_bottom = 416.0
 text = "Auto layout"
 
 [node name="PlayerBoard" parent="." instance=ExtResource("2_pppge")]
+scale = Vector2(1.5, 1.5)
 
 [connection signal="pressed" from="StartGameButton" to="." method="_on_start_game_button_pressed"]
