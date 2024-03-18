@@ -5,4 +5,6 @@
 [node name="Battleship" type="Node2D"]
 
 [node name="ShipBattleshipHull" type="Sprite2D" parent="."]
+position = Vector2(104.5, 15.5)
+rotation = 1.5708
 texture = ExtResource("1_ykmxj")

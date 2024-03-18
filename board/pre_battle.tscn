@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://cbki7t0q0rudt"]
+[gd_scene load_steps=7 format=3 uid="uid://cbki7t0q0rudt"]
 
 [ext_resource type="Script" path="res://board/pre_battle_menu.gd" id="1_sthaj"]
 [ext_resource type="PackedScene" uid="uid://dydf7lluj5inn" path="res://board/boards/player_board.tscn" id="2_pppge"]
+[ext_resource type="Texture2D" uid="uid://cp0sy3ja2hlgt" path="res://assets/ships/Battleship/ShipBattleshipHull.png" id="3_7lq2q"]
+[ext_resource type="Texture2D" uid="uid://bykkgx2x66cf" path="res://assets/ships/Carrier/ShipCarrierHull.png" id="4_tpgc7"]
+[ext_resource type="Texture2D" uid="uid://cv3jmlpmkaep7" path="res://assets/ships/Cruiser/ShipCruiserHull.png" id="5_v887t"]
+[ext_resource type="Texture2D" uid="uid://dwv6ui0du8v1b" path="res://assets/ships/PatrolBoat/ShipPatrolHull.png" id="6_xlmth"]
 
 [node name="PreBattleScreen" type="Node2D"]
 texture_filter = 1
@@ -14,15 +18,29 @@ offset_right = 559.0
 offset_bottom = 1004.0
 text = "Start Game"
 
-[node name="AutoLayoutButton" type="Button" parent="."]
-visible = false
-offset_left = 126.0
-offset_top = 365.0
-offset_right = 350.0
-offset_bottom = 416.0
-text = "Auto layout"
-
 [node name="PlayerBoard" parent="." instance=ExtResource("2_pppge")]
 scale = Vector2(1.5, 1.5)
+
+[node name="ShipButtonContainer" type="HBoxContainer" parent="."]
+offset_left = 53.0
+offset_top = 553.0
+offset_right = 385.0
+offset_bottom = 775.0
+
+[node name="BattleshipButton" type="TextureButton" parent="ShipButtonContainer"]
+layout_mode = 2
+texture_normal = ExtResource("3_7lq2q")
+
+[node name="CarrierButton" type="TextureButton" parent="ShipButtonContainer"]
+layout_mode = 2
+texture_normal = ExtResource("4_tpgc7")
+
+[node name="CruiserButton" type="TextureButton" parent="ShipButtonContainer"]
+layout_mode = 2
+texture_normal = ExtResource("5_v887t")
+
+[node name="PatrolButton" type="TextureButton" parent="ShipButtonContainer"]
+layout_mode = 2
+texture_normal = ExtResource("6_xlmth")
 
 [connection signal="pressed" from="StartGameButton" to="." method="_on_start_game_button_pressed"]

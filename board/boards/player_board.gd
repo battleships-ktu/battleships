@@ -25,5 +25,3 @@ func _process(delta):
 func get_mouse_grid_position(mouse_position):
 	var player_grid = $Board/GridTiles
 	return player_grid.get_tile_coords(mouse_position)
-	
-
