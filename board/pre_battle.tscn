@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=3 uid="uid://cbki7t0q0rudt"]
+
+[ext_resource type="Script" path="res://board/pre_battle_menu.gd" id="1_sthaj"]
+[ext_resource type="PackedScene" uid="uid://dydf7lluj5inn" path="res://board/boards/player_board.tscn" id="2_pppge"]
+
+[node name="PreBattleScreen" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_sthaj")
+
+[node name="StartGameButton" type="Button" parent="."]
+offset_left = 335.0
+offset_top = 953.0
+offset_right = 559.0
+offset_bottom = 1004.0
+text = "Start Game"
+
+[node name="AutoLayoutButton" type="Button" parent="."]
+visible = false
+offset_left = 126.0
+offset_top = 365.0
+offset_right = 350.0
+offset_bottom = 416.0
+text = "Auto layout"
+
+[node name="PlayerBoard" parent="." instance=ExtResource("2_pppge")]
+
+[connection signal="pressed" from="StartGameButton" to="." method="_on_start_game_button_pressed"]

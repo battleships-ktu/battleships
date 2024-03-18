@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5k0sb2v6npgr"]
+
+[ext_resource type="Texture2D" uid="uid://bykkgx2x66cf" path="res://assets/ships/Carrier/ShipCarrierHull.png" id="1_fmchx"]
+
+[node name="Carrier" type="Node2D"]
+
+[node name="ShipCarrierHull" type="Sprite2D" parent="."]
+texture = ExtResource("1_fmchx")

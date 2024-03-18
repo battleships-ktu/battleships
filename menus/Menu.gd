@@ -15,7 +15,7 @@ func _ready() -> void:
 
 
 func _on_start_game_pressed():
-	get_tree().change_scene_to_file("res://board/game_board.tscn")
+	get_tree().change_scene_to_file("res://board/pre_battle.tscn")
 	
 func _on_back_pressed():
 	move_to_prev()

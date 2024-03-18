@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ce0cj51jiy455"]
+
+[ext_resource type="Texture2D" uid="uid://dg73e56bolryl" path="res://assets/ships/Rescue Ship/ShipRescue.png" id="1_x1ppj"]
+
+[node name="Rescue" type="Node2D"]
+
+[node name="ShipRescue" type="Sprite2D" parent="."]
+texture = ExtResource("1_x1ppj")

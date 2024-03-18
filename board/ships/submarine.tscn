@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://bx21d5ohmc2ob"]
+
+[ext_resource type="Texture2D" uid="uid://sxbe257tyd32" path="res://assets/ships/Submarine/ShipSubMarineHull.png" id="1_ee052"]
+
+[node name="Submarine" type="Node2D"]
+
+[node name="ShipSubMarineHull" type="Sprite2D" parent="."]
+texture = ExtResource("1_ee052")
