@@ -2,7 +2,5 @@
 
 [ext_resource type="Texture2D" uid="uid://dwv6ui0du8v1b" path="res://assets/ships/PatrolBoat/ShipPatrolHull.png" id="1_nkvag"]
 
-[node name="Patrol" type="Node2D"]
-
-[node name="ShipPatrolHull" type="Sprite2D" parent="."]
+[node name="Patrol" type="Sprite2D"]
 texture = ExtResource("1_nkvag")

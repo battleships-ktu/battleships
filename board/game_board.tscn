@@ -1,12 +1,25 @@
 [gd_scene load_steps=4 format=3 uid="uid://ca0mfyil4am0c"]
 
-[ext_resource type="Script" path="res://board/game_board.gd" id="1_ksmjl"]
 [ext_resource type="PackedScene" uid="uid://dydf7lluj5inn" path="res://board/boards/player_board.tscn" id="2_xpcow"]
 [ext_resource type="PackedScene" uid="uid://ulg81q1w5xep" path="res://board/boards/enemy_board.tscn" id="3_cj0ar"]
 
+[sub_resource type="GDScript" id="GDScript_rmegk"]
+script/source = "extends Node2D
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
+
 [node name="GameBoard" type="Node2D"]
 texture_filter = 1
-script = ExtResource("1_ksmjl")
+script = SubResource("GDScript_rmegk")
 
 [node name="PlayerBoard" parent="." instance=ExtResource("2_xpcow")]
 position = Vector2(83, 72)

@@ -11,15 +11,16 @@
 texture_filter = 1
 script = ExtResource("1_sthaj")
 
+[node name="PlayerBoard" parent="." instance=ExtResource("2_pppge")]
+position = Vector2(41, 19)
+scale = Vector2(1.5, 1.5)
+
 [node name="StartGameButton" type="Button" parent="."]
 offset_left = 335.0
 offset_top = 953.0
 offset_right = 559.0
 offset_bottom = 1004.0
 text = "Start Game"
-
-[node name="PlayerBoard" parent="." instance=ExtResource("2_pppge")]
-scale = Vector2(1.5, 1.5)
 
 [node name="ShipButtonContainer" type="HBoxContainer" parent="."]
 offset_left = 53.0
@@ -44,3 +45,7 @@ layout_mode = 2
 texture_normal = ExtResource("6_xlmth")
 
 [connection signal="pressed" from="StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="pressed" from="ShipButtonContainer/BattleshipButton" to="." method="_on_battleship_button_pressed"]
+[connection signal="pressed" from="ShipButtonContainer/CarrierButton" to="." method="_on_carrier_button_pressed"]
+[connection signal="pressed" from="ShipButtonContainer/CruiserButton" to="." method="_on_cruiser_button_pressed"]
+[connection signal="pressed" from="ShipButtonContainer/PatrolButton" to="." method="_on_patrol_button_pressed"]

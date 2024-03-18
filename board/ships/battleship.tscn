@@ -2,9 +2,5 @@
 
 [ext_resource type="Texture2D" uid="uid://cp0sy3ja2hlgt" path="res://assets/ships/Battleship/ShipBattleshipHull.png" id="1_ykmxj"]
 
-[node name="Battleship" type="Node2D"]
-
-[node name="ShipBattleshipHull" type="Sprite2D" parent="."]
-position = Vector2(104.5, 15.5)
-rotation = 1.5708
+[node name="Battleship" type="Sprite2D"]
 texture = ExtResource("1_ykmxj")
