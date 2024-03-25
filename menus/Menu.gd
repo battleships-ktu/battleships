@@ -14,6 +14,7 @@ func _ready() -> void:
 	current_menu = menu_1
 
 
+
 func _on_start_game_pressed():
 	get_tree().change_scene_to_file("res://board/pre_battle.tscn")
 	
@@ -54,3 +55,7 @@ func get_menu_id(menu_id: String) -> Container:
 			return menu_2
 		_:
 			return menu_1
+
+
+func _on_multiplayer_pressed():
+	get_tree().change_scene_to_file("res://menus/lobby/room.tscn")
