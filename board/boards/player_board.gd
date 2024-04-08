@@ -1,13 +1,19 @@
 extends Node2D
 
+var tile_size
+
 var tiles
 var indicator
 var ship_array = []
+const WIDTH = 10
+const HEIGTH = 10
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tiles = $Tiles
 	indicator = $Indicator
+	tile_size = tiles.tiles.tile_set.tile_size
+	
 	for i in range(0, 10):
 		var row = []
 		row.resize(10)
@@ -27,7 +33,6 @@ func update_indicator():
 	if grid_coords != null:
 		indicator.visible = true
 		indicator.position = to_local(tiles.get_tile_global_position(grid_coords))
-		print(indicator.position)
 	else:
 		indicator.visible = false
 

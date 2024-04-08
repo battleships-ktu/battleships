@@ -4,14 +4,6 @@ var is_selecting_ship = false
 var selected_ship
 var saved_button
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func attach_ship_to_mouse(ship, button):
 	if is_selecting_ship:
@@ -20,14 +12,20 @@ func attach_ship_to_mouse(ship, button):
 	is_selecting_ship = true
 	saved_button = button
 	button.hide()
-	selected_ship = Sprite2D.new()
+	
+	selected_ship = instantiate_mouse_ship(ship)
+	add_child(selected_ship)
+
+func instantiate_mouse_ship(ship):
+	var mouse_ship = Sprite2D.new()
 	var script = preload("res://board/ship_selector.gd")
 	var board = $PlayerBoard
-	selected_ship.set_script(script)
-	selected_ship.set_board(board)
-	selected_ship.set_ship(ship)
-	selected_ship.set_process(true)
-	add_child(selected_ship)
+	mouse_ship.set_script(script)
+	mouse_ship.board = board
+	mouse_ship.ship = ship
+	mouse_ship.set_process(true)
+	return mouse_ship
+
 
 func detach_ship_from_mouse():
 	selected_ship.queue_free()

@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bykkgx2x66cf" path="res://assets/ships/Carrier/ShipCarrierHull.png" id="1_fmchx"]
 
 [node name="Carrier" type="Sprite2D"]
+scale = Vector2(1.5, 1)
 texture = ExtResource("1_fmchx")
-metadata/Width = 0
-metadata/Height = 0
+metadata/Width = 2
+metadata/Height = 4
