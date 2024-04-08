@@ -2,7 +2,8 @@ extends TileMap
 
 const WIDTH = 10
 const HEIGHT = 10
-	
+
+
 func get_tile_grid_position(mouse_coords):
 	var grid_coords = local_to_map(self.to_local(mouse_coords))
 	if grid_coords.x < 0 || grid_coords.x >= WIDTH || grid_coords.y < 0 || grid_coords.y >= HEIGHT:
