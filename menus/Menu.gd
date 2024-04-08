@@ -13,8 +13,6 @@ func _ready() -> void:
 	menu_size = get_viewport_rect().size
 	current_menu = menu_1
 
-
-
 func _on_start_game_pressed():
 	get_tree().change_scene_to_file("res://board/pre_battle.tscn")
 	
