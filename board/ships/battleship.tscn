@@ -4,3 +4,5 @@
 
 [node name="Battleship" type="Sprite2D"]
 texture = ExtResource("1_ykmxj")
+metadata/width = 0
+metadata/height = 0

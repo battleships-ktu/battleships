@@ -6,3 +6,5 @@
 
 [node name="ShipDestroyerHull" type="Sprite2D" parent="."]
 texture = ExtResource("1_iujcv")
+metadata/Width = 0
+metadata/Height = 0

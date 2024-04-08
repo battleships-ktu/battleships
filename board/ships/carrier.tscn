@@ -4,3 +4,5 @@
 
 [node name="Carrier" type="Sprite2D"]
 texture = ExtResource("1_fmchx")
+metadata/Width = 0
+metadata/Height = 0

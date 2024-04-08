@@ -4,3 +4,5 @@
 
 [node name="Patrol" type="Sprite2D"]
 texture = ExtResource("1_nkvag")
+metadata/Width = 0
+metadata/Height = 0

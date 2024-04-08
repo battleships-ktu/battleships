@@ -2,11 +2,17 @@ extends Node2D
 
 var tiles
 var indicator
+var ship_array = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tiles = $Tiles
 	indicator = $Indicator
+	for i in range(0, 10):
+		var row = []
+		row.resize(10)
+		row.fill(0)
+		ship_array.append(row)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,6 +30,10 @@ func update_indicator():
 		print(indicator.position)
 	else:
 		indicator.visible = false
+
+
+func try_place_ship(x, y, ship):
+	return true
 
 
 func get_tile_grid_position(mouse_position):

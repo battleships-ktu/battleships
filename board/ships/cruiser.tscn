@@ -4,3 +4,5 @@
 
 [node name="Cruiser" type="Sprite2D"]
 texture = ExtResource("1_sdnqo")
+metadata/Width = 0
+metadata/Height = 0
