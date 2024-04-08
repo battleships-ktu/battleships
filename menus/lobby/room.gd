@@ -1,9 +1,17 @@
 extends Node
 
-
-# Called when the node enters the scene tree for the first time.
+#var URL ="http://127.0.0.1:24845"
+var URL ="http://localhost:24845"
+#var URL ="https://httpbin.org/get"
 func _ready():
-	pass # Replace with function body.
+	$HTTPRequest.request_completed.connect(_on_request_completed)
+	$HTTPRequest.request(URL)
+
+func _on_request_completed(result, response_code, headers, body):
+#var output= body.get_string_from_utf8()
+	var json = JSON.parse_string(body.get_string_from_utf8())
+#print(json["type"])
+	print(json)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

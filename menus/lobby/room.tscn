@@ -85,4 +85,6 @@ theme = ExtResource("3_plm8o")
 theme_override_font_sizes/font_size = 70
 text = "Cancel"
 
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
 [connection signal="pressed" from="VBoxContainer/Cancel" to="." method="_on_cancel_pressed"]
