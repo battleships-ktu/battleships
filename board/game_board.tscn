@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ca0mfyil4am0c"]
+[gd_scene load_steps=9 format=3 uid="uid://ca0mfyil4am0c"]
 
 [ext_resource type="PackedScene" uid="uid://dydf7lluj5inn" path="res://board/boards/player_board.tscn" id="2_xpcow"]
 [ext_resource type="PackedScene" uid="uid://ulg81q1w5xep" path="res://board/boards/enemy_board.tscn" id="3_cj0ar"]
 [ext_resource type="Script" path="res://board/Turn.gd" id="3_l36q0"]
+[ext_resource type="FontFile" uid="uid://ccxnv8q4bwpfg" path="res://Vampire Wars.ttf" id="3_xavoh"]
 [ext_resource type="Script" path="res://board/Time.gd" id="4_tvrrv"]
 
 [sub_resource type="GDScript" id="GDScript_rmegk"]
@@ -28,17 +29,18 @@ texture_filter = 1
 script = SubResource("GDScript_rmegk")
 
 [node name="PlayerBoard" parent="." instance=ExtResource("2_xpcow")]
-position = Vector2(83, 154)
+position = Vector2(109, 154)
 
 [node name="EnemyBoard" parent="." instance=ExtResource("3_cj0ar")]
-position = Vector2(83, 558)
+position = Vector2(110, 558)
 
 [node name="Turn" type="RichTextLabel" parent="."]
-offset_left = 84.0
+offset_left = 106.0
 offset_top = 34.0
-offset_right = 440.0
+offset_right = 462.0
 offset_bottom = 74.0
 theme_override_constants/text_highlight_h_padding = 0
+theme_override_fonts/normal_font = ExtResource("3_xavoh")
 theme_override_fonts/mono_font = SubResource("SystemFont_ppoux")
 theme_override_font_sizes/normal_font_size = 32
 theme_override_styles/normal = SubResource("StyleBoxEmpty_wstpo")
@@ -51,10 +53,11 @@ scroll_following = true
 script = ExtResource("3_l36q0")
 
 [node name="Time" type="RichTextLabel" parent="."]
-offset_left = 87.0
+offset_left = 111.0
 offset_top = 52.0
-offset_right = 436.0
+offset_right = 460.0
 offset_bottom = 137.0
+theme_override_fonts/normal_font = ExtResource("3_xavoh")
 theme_override_font_sizes/normal_font_size = 24
 bbcode_enabled = true
 text = "[color=blue][center]
@@ -62,7 +65,7 @@ seconds[/center]"
 script = ExtResource("4_tvrrv")
 
 [node name="Timer" type="Timer" parent="Time"]
-wait_time = 3.0
+wait_time = 15.0
 autostart = true
 
 [connection signal="timeout" from="Time/Timer" to="Turn" method="_on_timer_timeout"]
