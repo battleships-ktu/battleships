@@ -1,0 +1,125 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr3jtbhani3qr"]
+
+[ext_resource type="Script" path="res://server/test/test.gd" id="1_axesd"]
+[ext_resource type="Script" path="res://server/server.gd" id="1_ujsw6"]
+
+[node name="NetworkingTest" type="Node2D"]
+script = ExtResource("1_axesd")
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("1_ujsw6")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+offset_left = 29.0
+offset_top = 21.0
+offset_right = 534.0
+offset_bottom = 45.0
+text = "Initial TCP test"
+
+[node name="Connect" type="Button" parent="."]
+offset_left = 27.0
+offset_top = 67.0
+offset_right = 105.0
+offset_bottom = 105.0
+text = "Connect"
+
+[node name="Status" type="Button" parent="."]
+offset_left = 125.0
+offset_top = 121.0
+offset_right = 207.0
+offset_bottom = 156.0
+text = "Status"
+
+[node name="Login" type="Button" parent="."]
+offset_left = 125.0
+offset_top = 69.0
+offset_right = 203.0
+offset_bottom = 107.0
+text = "Login"
+
+[node name="Create_room" type="Button" parent="."]
+offset_left = 247.0
+offset_top = 67.0
+offset_right = 363.0
+offset_bottom = 105.0
+text = "Create room"
+
+[node name="Join_room" type="Button" parent="."]
+offset_left = 245.0
+offset_top = 122.0
+offset_right = 361.0
+offset_bottom = 160.0
+text = "Join room"
+
+[node name="Strike" type="Button" parent="."]
+offset_left = 28.0
+offset_top = 263.0
+offset_right = 110.0
+offset_bottom = 298.0
+text = "Strike"
+
+[node name="Shot_response" type="Button" parent="."]
+offset_left = 125.0
+offset_top = 263.0
+offset_right = 259.0
+offset_bottom = 298.0
+text = "Shot response"
+
+[node name="End_game" type="Button" parent="."]
+offset_left = 276.0
+offset_top = 263.0
+offset_right = 366.0
+offset_bottom = 298.0
+text = "End game"
+
+[node name="Room_edit" type="TextEdit" parent="."]
+offset_left = 147.0
+offset_top = 956.0
+offset_right = 283.0
+offset_bottom = 1004.0
+placeholder_text = "Enter room UID"
+
+[node name="x_edit" type="TextEdit" parent="."]
+offset_left = 37.0
+offset_top = 321.0
+offset_right = 75.0
+offset_bottom = 369.0
+placeholder_text = "X"
+
+[node name="y_edit" type="TextEdit" parent="."]
+offset_left = 91.0
+offset_top = 322.0
+offset_right = 129.0
+offset_bottom = 370.0
+placeholder_text = "Y"
+
+[node name="Disconnect" type="Button" parent="."]
+offset_left = 35.0
+offset_top = 956.0
+offset_right = 129.0
+offset_bottom = 1002.0
+text = "Disconnect"
+
+[node name="Label" type="Label" parent="."]
+offset_left = 27.0
+offset_top = 187.0
+offset_right = 120.0
+offset_bottom = 210.0
+text = "Current game state:"
+
+[node name="Game_state_label" type="Label" parent="."]
+offset_left = 27.0
+offset_top = 222.0
+offset_right = 67.0
+offset_bottom = 245.0
+text = "Initial"
+
+[connection signal="pressed" from="Connect" to="." method="_on_connect_pressed"]
+[connection signal="pressed" from="Status" to="." method="_on_status_pressed"]
+[connection signal="pressed" from="Login" to="." method="_on_login_pressed"]
+[connection signal="pressed" from="Create_room" to="." method="_on_create_room_pressed"]
+[connection signal="pressed" from="Join_room" to="." method="_on_join_room_pressed"]
+[connection signal="pressed" from="Strike" to="." method="_on_strike_pressed"]
+[connection signal="pressed" from="Shot_response" to="." method="_on_shot_response_pressed"]
+[connection signal="pressed" from="End_game" to="." method="_on_end_game_pressed"]
+[connection signal="pressed" from="Disconnect" to="." method="_on_disconnect_pressed"]
