@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://dwv6ui0du8v1b" path="res://assets/ships/PatrolBoat/ShipPatrolHull.png" id="1_nkvag"]
 
 [node name="Patrol" type="Sprite2D"]
+scale = Vector2(1, 0.58)
 texture = ExtResource("1_nkvag")
 metadata/Width = 1
 metadata/Height = 1

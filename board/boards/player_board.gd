@@ -10,10 +10,13 @@ var indicator
 var ship_array = []
 const WIDTH = 10
 const HEIGTH = 10
+var show_indicator = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tiles = $Tiles
+	instantiate_ship_array()
+	
 	tog_explosions = 0
 	
 	set_process_input(true)
@@ -25,11 +28,6 @@ func _ready():
 	indicator = $Indicator
 	tile_size = tiles.tiles.tile_set.tile_size
 	
-	for i in range(0, 10):
-		var row = []
-		row.resize(10)
-		row.fill(0)
-		ship_array.append(row)
 
 func _show_bomb_explosion(mouse_position, type_explosive):
 	if type_explosive == null:
@@ -51,9 +49,19 @@ func _unhandled_input(event):
 				main_explosion=bomb_explosion
 			2:
 				main_explosion=water_explosion
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	update_indicator()
+	if show_indicator:
+		update_indicator()
+
+
+#sphagetti mama mia
+func spawn_ship(ship):
+	ship.position = to_local(ship.global_position)
+	ship.transform = ship.global_transform
+	add_child(ship)
 
 
 func update_indicator():
@@ -70,8 +78,12 @@ func update_indicator():
 		indicator.visible = false
 
 
-func try_place_ship(x, y, ship):
-	return true
+func instantiate_ship_array():
+	for i in HEIGTH:
+		var row = []
+		row.resize(WIDTH)
+		row.fill(0)
+		ship_array.append(row)
 
 
 func get_tile_grid_position(mouse_position):
@@ -80,4 +92,3 @@ func get_tile_grid_position(mouse_position):
 
 func get_tile_global_position(grid_position):
 	return tiles.get_tile_global_position(grid_position)
-

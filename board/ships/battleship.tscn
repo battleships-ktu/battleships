@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://cp0sy3ja2hlgt" path="res://assets/ships/Battleship/ShipBattleshipHull.png" id="1_ykmxj"]
 
 [node name="Battleship" type="Sprite2D"]
+scale = Vector2(1, 0.754)
 texture = ExtResource("1_ykmxj")
 metadata/Width = 1
 metadata/Height = 5
