@@ -16,6 +16,8 @@ anim_speed_max = 2.3
 [node name="WaterExoplosion" type="GPUParticles2D"]
 material = SubResource("CanvasItemMaterial_cwj05")
 position = Vector2(38, 81)
+emitting = false
 amount = 1
 process_material = SubResource("ParticleProcessMaterial_ynrga")
 texture = ExtResource("1_enys1")
+one_shot = true

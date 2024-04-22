@@ -67,7 +67,7 @@ func send(data: String) -> bool:
 		return false
 	var error = _stream.put_data(data.to_utf8_buffer())
 	if error != OK:
-		tprint("Error writing to stream: " + error)
+		print("Error writing to stream: " + error)
 		return false
 	return true
 	
