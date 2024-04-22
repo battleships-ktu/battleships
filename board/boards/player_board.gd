@@ -17,6 +17,9 @@ func _ready():
 	tiles = $Tiles
 	instantiate_ship_array()
 	
+	for i in HEIGTH:
+		print(ship_array[i])
+	
 	tog_explosions = 0
 	
 	set_process_input(true)

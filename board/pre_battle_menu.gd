@@ -1,14 +1,10 @@
 extends Node2D
 
-var board
+@onready var board = $PlayerBoard
 
 var is_selecting_ship = false
 var selected_ship
 var saved_button
-
-
-func _ready():
-	board = $PlayerBoard
 
 
 func _input(event):
@@ -52,7 +48,8 @@ func detach_ship_from_mouse():
 
 func _on_start_game_button_pressed():
 	var global = get_node("/root/Global")
-	global.player_board = board
+	global.player_board = PackedScene.new()
+	global.player_board.pack(get_node("PlayerBoard"))
 	get_tree().change_scene_to_file("res://board/game_board.tscn")
 
 

@@ -72,6 +72,9 @@ func _process(delta):
 
 
 func try_place_ship(ship_selector):
+	if ship_selector.ship_grid_position == null:
+		return
+		
 	var ship_width = ship_selector.ship_width
 	var ship_height = ship_selector.ship_height
 	var target_x = ship_selector.ship_grid_position.x
