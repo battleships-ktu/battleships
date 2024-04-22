@@ -12,9 +12,9 @@ script/source = "extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var global = get_node(\"/root/PreBattle\")
-	var board = global.board.instantiate()
-	add_child(board)
+	#var global = get_node(\"/root/PreBattle\")
+	#var board = global.board.instantiate()
+	#add_child(board)
 	pass
 
 
