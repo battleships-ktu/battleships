@@ -76,6 +76,7 @@ layout_mode = 2
 text = "Start game"
 
 [node name="Multiplayer" type="Button" parent="Menu/VBoxContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Multiplayer"
 

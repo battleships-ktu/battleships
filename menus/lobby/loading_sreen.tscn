@@ -1,14 +1,14 @@
 [gd_scene load_steps=9 format=3 uid="uid://c4rxuh634e3mx"]
 
-[ext_resource type="Script" path="res://menus/lobby/room.gd" id="1_0fst4"]
-[ext_resource type="Shader" path="res://shaders/radar.gdshader" id="1_ru20v"]
-[ext_resource type="FontFile" uid="uid://v4a1odgcux7h" path="res://ui/fonts/3270Condensed-Regular.ttf" id="2_da8ye"]
-[ext_resource type="Texture2D" uid="uid://csyb801jxfcmh" path="res://assets/main_menu/lobby/radar grid.jpg" id="2_uywkg"]
-[ext_resource type="Theme" uid="uid://bmaaet3opnwik" path="res://ui/themes/bluesea.tres" id="3_plm8o"]
-[ext_resource type="Script" path="res://server/server.gd" id="6_ilgtk"]
+[ext_resource type="Script" path="res://menus/lobby/loading_screen.gd" id="1_4cwq4"]
+[ext_resource type="Texture2D" uid="uid://csyb801jxfcmh" path="res://assets/main_menu/lobby/radar grid.jpg" id="2_e1wn3"]
+[ext_resource type="FontFile" uid="uid://v4a1odgcux7h" path="res://ui/fonts/3270Condensed-Regular.ttf" id="3_xw0xw"]
+[ext_resource type="Shader" path="res://shaders/radar.gdshader" id="4_62wic"]
+[ext_resource type="Theme" uid="uid://bmaaet3opnwik" path="res://ui/themes/bluesea.tres" id="5_uuxht"]
+[ext_resource type="Script" path="res://server/server.gd" id="6_av8sx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d8x67"]
-shader = ExtResource("1_ru20v")
+shader = ExtResource("4_62wic")
 shader_parameter/blur = 0.1
 shader_parameter/line_color = Color(0, 0.592157, 0, 1)
 shader_parameter/beam_color = Color(0.709804, 1, 0.701961, 1)
@@ -35,7 +35,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_0fst4")
+script = ExtResource("1_4cwq4")
 
 [node name="background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -44,7 +44,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_uywkg")
+texture = ExtResource("2_e1wn3")
 expand_mode = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
@@ -62,7 +62,7 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0, 0.592157, 0, 1)
-theme_override_fonts/font = ExtResource("2_da8ye")
+theme_override_fonts/font = ExtResource("3_xw0xw")
 theme_override_font_sizes/font_size = 53
 text = "Searching for opponent."
 
@@ -82,11 +82,11 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme = ExtResource("3_plm8o")
+theme = ExtResource("5_uuxht")
 theme_override_font_sizes/font_size = 70
 text = "Cancel"
 
 [node name="Client" type="Node" parent="."]
-script = ExtResource("6_ilgtk")
+script = ExtResource("6_av8sx")
 
 [connection signal="pressed" from="VBoxContainer/Cancel" to="." method="_on_cancel_pressed"]

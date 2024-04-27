@@ -23,7 +23,7 @@ func _get_list_of_rooms():
 		
 	_client.send("0;%d;0" % _client.PROTOCOL_VERSION)
 	await _client.response
-	print("Handshake response: ", lastData)
+	#print("Handshake response: ", lastData)
 	_client.send("0")
 	await _client.response
 	print("Empty rooms: ", lastData)
@@ -44,7 +44,7 @@ func _create_room():
 		
 	_client.send("0;%d;0" % _client.PROTOCOL_VERSION)
 	await _client.response
-	print("Handshake response: ", lastData)
+	#print("Handshake response: ", lastData)
 	_client.send("0")
 	await _client.response
 	print("Empty rooms: ", lastData)
@@ -55,21 +55,18 @@ func _login():
 		
 	_client.send("0;%d;1" % _client.PROTOCOL_VERSION)
 	await _client.response
-	print("Handshake response: ", lastData)
+	#print("Handshake response: ", lastData)
 	_client.send("0;Test name")
 	await _client.response
 	print("Login response: ", lastData)
-	
 
 
-
-# Debuging 
 func _handle_client_disconnected() -> void:
 	print("Client disconnected from server.")
 	if ! EXIT:
 		_connect()
 
-	
+
 func _handle_client_error() -> void:
 	print("Client err.")
 
@@ -85,6 +82,7 @@ func _handle_client_connected() -> void:
 		print("Creating room ")
 		_create_room()
 	else:
+		_login()
 		_join_room(UID)
 		
 func _connect():
@@ -96,18 +94,16 @@ func _join_room(UIID: String):
 	# Serveriui duodamas room UID prie kurio prisijungti
 	_client.send("1;%s" % UIID)
 	await _client.response
-	print("Game start response: ", lastData)
-	if lastData[0] == "1":
+	print("Game start response main: ", lastData[0])
+	#print(lastData)
+	if int(lastData[0]) == 0:
 		print("GAME STARTED")
 		get_tree().change_scene_to_file("res://board/game_board.tscn")
 		#game_state = GameState.AWAIT_ATTACK
-	
 
 func _process(delta):
 	pass
 
-
-			
 func _on_cancel_pressed():
 	EXIT=true
 	_client.disconnect_from_host()

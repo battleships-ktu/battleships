@@ -1,0 +1,55 @@
+[gd_scene load_steps=5 format=3 uid="uid://cp2c15ivbpdgu"]
+
+[ext_resource type="Script" path="res://menus/lobby/lobby.gd" id="1_wr7y4"]
+[ext_resource type="Script" path="res://server/server.gd" id="2_cjrgv"]
+[ext_resource type="Texture2D" uid="uid://eutwpqboatx6" path="res://assets/buttons/refresh.png" id="3_e3nvq"]
+[ext_resource type="Texture2D" uid="uid://c4aqtwkmmdspx" path="res://assets/buttons/image.png" id="4_qejd1"]
+
+[node name="Node" type="Node2D"]
+script = ExtResource("1_wr7y4")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 115.0
+offset_top = 152.0
+offset_right = 232.0
+offset_bottom = 179.0
+text = "Login"
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("2_cjrgv")
+
+[node name="Button2" type="Button" parent="."]
+visible = false
+offset_left = 357.0
+offset_top = 349.0
+offset_right = 475.0
+offset_bottom = 388.0
+text = "Refesh"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 92.0
+offset_top = 330.0
+offset_right = 519.0
+offset_bottom = 696.0
+
+[node name="TextureButton" type="TextureButton" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 378.0
+offset_top = 150.0
+offset_right = 428.0
+offset_bottom = 193.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("3_e3nvq")
+texture_hover = ExtResource("4_qejd1")
+ignore_texture_size = true
+stretch_mode = 5
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]
