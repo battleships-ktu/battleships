@@ -30,7 +30,7 @@ text = "Refesh"
 offset_left = 92.0
 offset_top = 330.0
 offset_right = 519.0
-offset_bottom = 696.0
+offset_bottom = 977.0
 
 [node name="TextureButton" type="TextureButton" parent="."]
 anchors_preset = 8
@@ -50,6 +50,14 @@ texture_hover = ExtResource("4_qejd1")
 ignore_texture_size = true
 stretch_mode = 5
 
+[node name="LineEdit" type="LineEdit" parent="."]
+offset_left = 117.0
+offset_top = 211.0
+offset_right = 455.0
+offset_bottom = 242.0
+placeholder_text = "Player name"
+
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]

@@ -1,6 +1,7 @@
 extends Node2D
-var lobbyContainer
 
+var SearchName=""
+var PlayerName="Shrek"
 const HOST: String = "localhost"
 const PORT: int = 24845
 var Status
@@ -11,14 +12,16 @@ enum GameState {NOT_STARTED, ATTACK, AWAIT_ATTACK, AWAIT_RESPONSE, RESPOND, WINN
 var _client = $Client
 var lastData: PackedStringArray
 var game_state = GameState.NOT_STARTED
-
+@onready
+var lobbyContainer = $VBoxContainer
 
 func _ready():
 	_client.connected.connect(_handle_client_connected)
 	_client.disconnected.connect(_handle_client_disconnected)
 	_client.errored.connect(_handle_client_error)
 	_client.response.connect(_handle_client_data)
-	lobbyContainer = $VBoxContainer
+	
+
 
 
 func _handle_client_error(error: int) -> void:
@@ -34,7 +37,10 @@ func _login():
 	_client.send("0;%d;1" % _client.PROTOCOL_VERSION)
 	await _client.response
 	print("Handshake response: ", lastData)
-	_client.send("0;Test name")
+	# Testing
+	#var random_number = randi() % 101
+	#_client.send("0;"+PlayerName+""+str(random_number))
+	_client.send("0;"+PlayerName)
 	await _client.response
 	print("Login response: ", lastData)
 
@@ -61,19 +67,23 @@ func _status():
 			
 		#  Prideti turini i VBoxContainer
 		for n in range(players.size()):
-			var playerLabel = Label.new()
-			playerLabel.text = players[n]
-			lobbyContainer.add_child(playerLabel)
-			var joinButton = Button.new()
-			joinButton.text = "Join"
-			joinButton.connect("pressed", _join_match.bind(rooms[n]))
-			lobbyContainer.add_child(joinButton)
+			print(SearchName +" name of player")
+			if (SearchName == "" || players[n] == SearchName):
+				var playerLabel = Label.new()
+				playerLabel.text = players[n]
+				lobbyContainer.add_child(playerLabel)
+				var joinButton = Button.new()
+				joinButton.text = "Join"
+				joinButton.connect("pressed", _join_match.bind(rooms[n]))
+				lobbyContainer.add_child(joinButton)
 	
 	# Atliekamas Connect -> Login -> Join
 	Status=2
 
 
 func _join_match(UID):
+	await _login()
+	
 	print("Joining room:", UID)
 	_client.send("1;%s" % UID)
 	await _client.response
@@ -96,8 +106,7 @@ func _handle_client_connected() -> void:
 		print("room creation")
 		await _login()
 		_create_room()
-	elif (Status == 2):
-		_login()
+
 
 
 func _handle_client_disconnected() -> void:
@@ -191,3 +200,7 @@ func _on_texture_button_pressed():
 	# Atliekamas Connect -> Status
 	Status=0
 	_connect()
+
+
+func _on_line_edit_text_changed(new_text):
+	SearchName=new_text
