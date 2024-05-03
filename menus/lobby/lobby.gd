@@ -9,7 +9,7 @@ var Status
 enum GameState {NOT_STARTED, ATTACK, AWAIT_ATTACK, AWAIT_RESPONSE, RESPOND, WINNER, LOSER}
 
 @onready
-var _client = $Client
+var _client = get_node("/root/TCPClient")
 var lastData: PackedStringArray
 var game_state = GameState.NOT_STARTED
 @onready
