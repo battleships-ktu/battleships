@@ -5,7 +5,7 @@ var UID = ""
 var EXIT = false
 
 @onready
-var _client = $Client
+var _client = get_node("/root/TCPClient")
 var lastData: PackedStringArray
 
 
@@ -106,5 +106,4 @@ func _process(delta):
 
 func _on_cancel_pressed():
 	EXIT=true
-	_client.disconnect_from_host()
 	get_tree().change_scene_to_file("res://menus/menu.tscn")

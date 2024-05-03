@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://c4rxuh634e3mx"]
+[gd_scene load_steps=8 format=3 uid="uid://c2rqw4skpecu4"]
 
 [ext_resource type="Script" path="res://menus/lobby/loading_screen.gd" id="1_4cwq4"]
 [ext_resource type="Texture2D" uid="uid://csyb801jxfcmh" path="res://assets/main_menu/lobby/radar grid.jpg" id="2_e1wn3"]
 [ext_resource type="FontFile" uid="uid://v4a1odgcux7h" path="res://ui/fonts/3270Condensed-Regular.ttf" id="3_xw0xw"]
 [ext_resource type="Shader" path="res://shaders/radar.gdshader" id="4_62wic"]
 [ext_resource type="Theme" uid="uid://bmaaet3opnwik" path="res://ui/themes/bluesea.tres" id="5_uuxht"]
-[ext_resource type="Script" path="res://server/server.gd" id="6_av8sx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d8x67"]
 shader = ExtResource("4_62wic")
@@ -85,8 +84,5 @@ size_flags_vertical = 4
 theme = ExtResource("5_uuxht")
 theme_override_font_sizes/font_size = 70
 text = "Cancel"
-
-[node name="Client" type="Node" parent="."]
-script = ExtResource("6_av8sx")
 
 [connection signal="pressed" from="VBoxContainer/Cancel" to="." method="_on_cancel_pressed"]

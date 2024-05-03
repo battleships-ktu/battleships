@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+TCPClient="*res://server/server.gd"
 Global="res://board/global.gd"
 PreBattle="res://board/pre_battle_menu.gd"
 
