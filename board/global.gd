@@ -1,3 +1,3 @@
 extends Node
 
-var player_board
+var ship_grid

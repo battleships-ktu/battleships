@@ -9,14 +9,14 @@
 [sub_resource type="GDScript" id="GDScript_rmegk"]
 script/source = "extends Node2D
 
+@onready
+var player_board = $PlayerBoard
+@onready
+var global_node = get_node(\"/root/Global\")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	#var global = get_node(\"/root/PreBattle\")
-	#var board = global.board.instantiate()
-	#add_child(board)
-	pass
-
+	player_board.set_ships_from_grid(global_node.ship_grid)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

@@ -9,7 +9,7 @@ var tiles
 var indicator
 var ship_array = []
 const WIDTH = 10
-const HEIGTH = 10
+const HEIGHT = 10
 var show_indicator = true
 
 # Called when the node enters the scene tree for the first time.
@@ -17,8 +17,9 @@ func _ready():
 	tiles = $Tiles
 	instantiate_ship_array()
 	
-	for i in HEIGTH:
+	for i in HEIGHT:
 		print(ship_array[i])
+	print()
 	
 	tog_explosions = 0
 	
@@ -82,7 +83,7 @@ func update_indicator():
 
 
 func instantiate_ship_array():
-	for i in HEIGTH:
+	for i in HEIGHT:
 		var row = []
 		row.resize(WIDTH)
 		row.fill(0)
@@ -95,3 +96,76 @@ func get_tile_grid_position(mouse_position):
 
 func get_tile_global_position(grid_position):
 	return tiles.get_tile_global_position(grid_position)
+	
+# Sita visa funkcija yra belekoks hackas ir man cia niekas nepatinka
+# bet jei norim speti viska padaryt tures jum tikt >:)
+func set_ships_from_grid(grid):
+	ship_array = grid
+	
+	print(grid)
+	print()
+	
+	var battleship = preload("res://board/ships/battleship.tscn").instantiate()
+	var carrier = preload("res://board/ships/carrier.tscn").instantiate()
+	var cruiser = preload("res://board/ships/cruiser.tscn").instantiate()
+	var patrol = preload("res://board/ships/patrol.tscn").instantiate()
+	var placed = [true, false, false, false, false]
+	
+	for x in WIDTH:
+		for y in HEIGHT:
+			match grid[y][x]:
+				1:
+					if placed[1]:
+						continue
+					# Tikrinti rotacija
+					if x + 1 < WIDTH && grid[y][x + 1] == 1:
+						create_ship(battleship, 1, x, y, true)
+					else:
+						create_ship(battleship, 1, x, y, false)
+					placed[1] = true
+				2:
+					if placed[2]:
+						continue
+					if x + 2 < WIDTH && grid[y][x + 2] == 2:
+						create_ship(carrier, 2, x, y, true)
+					else:
+						create_ship(carrier, 2, x, y, false)
+					placed[2] = true
+				3:
+					if placed[3]:
+						continue
+					if x + 1 < WIDTH && grid[y][x + 2] == 2:
+						create_ship(cruiser, 3, x, y, true)
+					else:
+						create_ship(cruiser, 3, x, y, false)
+					placed[3] = true
+				4:
+					if placed[3]:
+						continue
+					create_ship(patrol, 4, x, y, false)
+					placed[3] = true
+
+func create_ship(ship, ship_id, x, y, rotated):
+	var new_ship = Sprite2D.new()
+	new_ship.texture = ship.texture
+	new_ship.transform = ship.transform
+	new_ship.global_position = translate_grid_coords_to_scene(ship_id, x, y)
+	#new_ship.rotation = 0 if !rotated else 90
+	add_child(new_ship)
+
+# Cia crazy blogas kodas, bet as niekaip negalejau gauti laivu width ir height
+# tai tiesiog hardcodinau offsetus
+func translate_grid_coords_to_scene(ship_id, x, y):
+	print(tile_size.x)
+	print("test")
+	var ship_offsets = [
+		null,
+		Vector2(tile_size.x / 2, tile_size.y * 2.5),
+		Vector2(tile_size.x, tile_size.y * 2),
+		Vector2(tile_size.x / 2, tile_size.y * 2),
+		Vector2(tile_size.x / 2, tile_size.y / 2.5)
+	]
+	return Vector2(
+		tile_size.x * (x + 1), 
+		tile_size.y * (y + 1)
+	) + ship_offsets[ship_id]

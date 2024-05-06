@@ -36,7 +36,7 @@ func calc_offsets():
 	var board_x_limit_offset = 1 - ship_width % 2
 	var board_y_limit_offset = 1 - ship_height % 2
 	BOARD_X_LIMIT = board.WIDTH - 1 + board_x_limit_offset
-	BOARD_Y_LIMIT = board.HEIGTH - 1 + board_y_limit_offset
+	BOARD_Y_LIMIT = board.HEIGHT - 1 + board_y_limit_offset
 	
 	position_offset = Vector2(
 		BOARD_HALF_TILE.x * board_x_limit_offset,
@@ -71,7 +71,7 @@ func _process(delta):
 		ship_grid_position = null
 
 
-func try_place_ship(ship_selector):
+func try_place_ship(ship_selector, shipId):
 	if ship_selector.ship_grid_position == null:
 		return
 		
@@ -83,16 +83,17 @@ func try_place_ship(ship_selector):
 	#Check if ship can be placed
 	for ship_row in ship_height:
 		for ship_col in ship_width:
-			if board.ship_array[ship_row + target_y][ship_col + target_x] == 1:
+			if board.ship_array[ship_row + target_y][ship_col + target_x] != 0:
 				return false
 	
 	#Spawn ship: Set flags in ship matrix
 	for ship_row in ship_height:
 		for ship_col in ship_width:
-			board.ship_array[ship_row + target_y][ship_col + target_x] = 1
+			board.ship_array[ship_row + target_y][ship_col + target_x] = shipId
 			
 	for y in 10:
 		print(board.ship_array[y])
+	print()
 	
 	#Spawn ship: create ship sprite (košė makalošė, bet idc)
 	var new_ship = Sprite2D.new()
