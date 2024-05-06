@@ -134,7 +134,7 @@ func set_ships_from_grid(grid):
 				3:
 					if placed[3]:
 						continue
-					if x + 1 < WIDTH && grid[y][x + 2] == 2:
+					if x + 1 < WIDTH && grid[y][x + 1] == 3:
 						create_ship(cruiser, 3, x, y, true)
 					else:
 						create_ship(cruiser, 3, x, y, false)
@@ -149,15 +149,13 @@ func create_ship(ship, ship_id, x, y, rotated):
 	var new_ship = Sprite2D.new()
 	new_ship.texture = ship.texture
 	new_ship.transform = ship.transform
-	new_ship.global_position = translate_grid_coords_to_scene(ship_id, x, y)
-	#new_ship.rotation = 0 if !rotated else 90
+	new_ship.global_position = translate_grid_coords_to_scene(ship_id, rotated, x, y)
+	new_ship.rotation = 0 if !rotated else PI / 2
 	add_child(new_ship)
 
 # Cia crazy blogas kodas, bet as niekaip negalejau gauti laivu width ir height
 # tai tiesiog hardcodinau offsetus
-func translate_grid_coords_to_scene(ship_id, x, y):
-	print(tile_size.x)
-	print("test")
+func translate_grid_coords_to_scene(ship_id, rotated, x, y):
 	var ship_offsets = [
 		null,
 		Vector2(tile_size.x / 2, tile_size.y * 2.5),
@@ -165,7 +163,12 @@ func translate_grid_coords_to_scene(ship_id, x, y):
 		Vector2(tile_size.x / 2, tile_size.y * 2),
 		Vector2(tile_size.x / 2, tile_size.y / 2.5)
 	]
+	if !rotated:
+		return Vector2(
+			tile_size.x * (x + 1), 
+			tile_size.y * (y + 1)
+		) + ship_offsets[ship_id]
 	return Vector2(
-		tile_size.x * (x + 1), 
-		tile_size.y * (y + 1)
-	) + ship_offsets[ship_id]
+		tile_size.x * (x + 1) + ship_offsets[ship_id].y, 
+		tile_size.y * (y + 1) + ship_offsets[ship_id].x
+	)
