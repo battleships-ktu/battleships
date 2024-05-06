@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b2x57saro4bgk"]
+
+[ext_resource type="Texture2D" uid="uid://docmdtxgapm4y" path="res://assets/board/Tokens.png" id="1_rxyfv"]
+
+[node name="Miss" type="Sprite2D"]
+texture = ExtResource("1_rxyfv")
+hframes = 4
+frame = 2

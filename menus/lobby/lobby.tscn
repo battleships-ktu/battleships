@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://cp2c15ivbpdgu"]
+[gd_scene load_steps=4 format=3 uid="uid://b335dbvkdx73h"]
 
 [ext_resource type="Script" path="res://menus/lobby/lobby.gd" id="1_wr7y4"]
-[ext_resource type="Script" path="res://server/server.gd" id="2_cjrgv"]
 [ext_resource type="Texture2D" uid="uid://eutwpqboatx6" path="res://assets/buttons/refresh.png" id="3_e3nvq"]
 [ext_resource type="Texture2D" uid="uid://c4aqtwkmmdspx" path="res://assets/buttons/image.png" id="4_qejd1"]
 
@@ -14,9 +13,6 @@ offset_top = 152.0
 offset_right = 232.0
 offset_bottom = 179.0
 text = "Login"
-
-[node name="Client" type="Node" parent="."]
-script = ExtResource("2_cjrgv")
 
 [node name="Button2" type="Button" parent="."]
 visible = false

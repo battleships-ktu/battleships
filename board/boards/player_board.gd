@@ -26,9 +26,7 @@ func _ready():
 	set_process_input(true)
 	bomb_explosion = preload("res://particles/Retro_Explosion.tscn");
 	water_explosion = preload("res://particles/water_exoplosion.tscn");
- 	#effect = EFFECT.instance();
-	
-	#level_scene.add_child(new_particles)
+
 	indicator = $Indicator
 	tile_size = tiles.tiles.tile_set.tile_size
 	
@@ -42,23 +40,20 @@ func _show_bomb_explosion(mouse_position, type_explosive):
 	explosion.position = mouse_position
 
 
+func hit_tile(coords):
+	var marker = preload("res://board/boards/tokens/hit.tscn").instantiate()
+	marker.position = to_local(get_tile_global_position(coords))
+	_show_bomb_explosion(marker.position, bomb_explosion)
+	add_child(marker)
 
 
-			
-func _unhandled_input(event):
-	
-	if event is InputEventMouseButton and enable_explosion:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-			var mouse_position = get_viewport().get_mouse_position()
-			var grid_coords = get_tile_grid_position(mouse_position)
-			if grid_coords != null:
-				print(ship_array[grid_coords[1]][grid_coords[0]])
-				indicator.position = to_local(tiles.get_tile_global_position(grid_coords))
-				match ship_array[grid_coords[1]][grid_coords[0]]:
-					0:
-						_show_bomb_explosion(indicator.position, water_explosion)
-					_:
-						_show_bomb_explosion(indicator.position, bomb_explosion)
+func miss_tile(coords):
+	var marker = preload("res://board/boards/tokens/miss.tscn").instantiate()
+	marker.position = to_local(get_tile_global_position(coords))
+	_show_bomb_explosion(marker.position, water_explosion)
+	add_child(marker)
+
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -80,9 +75,6 @@ func update_indicator():
 	if grid_coords != null:
 		indicator.visible = true
 		indicator.position = to_local(tiles.get_tile_global_position(grid_coords))
-
-		#_show_bomb_explosion(indicator.position, main_explosion)
-
 	else:
 		indicator.visible = false
 
@@ -145,10 +137,10 @@ func set_ships_from_grid(grid):
 						create_ship(cruiser, 3, x, y, false)
 					placed[3] = true
 				4:
-					if placed[3]:
+					if placed[4]:
 						continue
 					create_ship(patrol, 4, x, y, false)
-					placed[3] = true
+					placed[4] = true
 
 func create_ship(ship, ship_id, x, y, rotated):
 	var new_ship = Sprite2D.new()

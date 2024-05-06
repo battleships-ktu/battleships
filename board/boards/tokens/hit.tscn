@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1uwh1qbjq7og"]
+
+[ext_resource type="Texture2D" uid="uid://docmdtxgapm4y" path="res://assets/board/Tokens.png" id="1_fypmh"]
+
+[node name="Hit" type="Sprite2D"]
+texture = ExtResource("1_fypmh")
+hframes = 4
+frame = 3

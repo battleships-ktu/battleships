@@ -9,18 +9,163 @@
 [sub_resource type="GDScript" id="GDScript_rmegk"]
 script/source = "extends Node2D
 
-@onready
-var player_board = $PlayerBoard
-@onready
-var global_node = get_node(\"/root/Global\")
+@onready var player_board = $PlayerBoard
+@onready var enemy_board = $EnemyBoard
+@onready var global_node = get_node(\"/root/Global\")
+@onready var client = get_node(\"/root/TCPClient\")
 
-# Called when the node enters the scene tree for the first time.
+var game_state
+var GameState
+
+var last_game_state
+var lastData: PackedStringArray
+
+var last_shot_coords
+
+
 func _ready():
 	player_board.set_ships_from_grid(global_node.ship_grid)
+	player_board.show_indicator = false;
+	
+	client.disconnected.connect(_handle_client_disconnected)
+	client.errored.connect(_handle_client_error)
+	client.response.connect(_handle_client_data)
+	
+	GameState = client.GameState
+	game_state = client.game_state
+	last_game_state = GameState.NOT_STARTED
+	
+	enemy_board.strike.connect(_on_strike)
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+
+func _process(_delta):
+	if last_game_state == game_state:
+		return
+		
+	var text = \"\"
+	last_game_state = game_state
+	match game_state:
+		GameState.NOT_STARTED:
+			text = \"Not started NOT_STARTED\"
+		GameState.ATTACK:
+			text = \"Attack ATTACK\"
+		GameState.AWAIT_ATTACK:
+			text = \"Waiting for an attack from opponent AWAIT_ATTACK\"
+		GameState.AWAIT_RESPONSE:
+			text = \"Waiting for a response from opponent AWAIT_RESPONSE\"
+		GameState.RESPOND:
+			text = \"Respond to opponent whether shot hit RESPOND\"
+		GameState.WINNER:
+			text = \"You won WINNER\"
+		GameState.LOSER:
+			text = \"You lost LOSER\"
+		_:
+			text = \"ERROR\"
+			
+	$Game_state_label.text = text
+
+
+func _handle_client_data(data: Array) -> void:
+	lastData = data
+	if (game_state != GameState.NOT_STARTED):
+		handle_game_response()
+
+
+func _on_strike(c):
+	if !client.is_online():
+		return
+	if (game_state != GameState.ATTACK):
+		# Tai galima siusti tik, kai turi siunti bomba
+		return
+		
+	# Siusti koordinates kur saunama, pirmas response success, antras
+	# grazinamas kai gaunamas response is oponento ar pataike
+	last_shot_coords = c
+	client.send(\"0;%s;%s\" % [c.x, c.y])
+
+
+func _respond_to_enemy_hit(x, y):
+	if !client.is_online():
+		return
+	if (game_state != GameState.RESPOND):
+		# Tai galima siusti tik, kai zaidejas turi atsakyti ar oponentas pataike
+		return
+		
+	if player_board.ship_array[y][x] != 0:
+		player_board.hit_tile(Vector2i(x,y))
+		client.send(\"1;1\")
+	else:
+		player_board.miss_tile(Vector2i(x,y))
+		client.send(\"1;0\")
+
+
+func handle_game_response():
+	match game_state:
+		GameState.ATTACK:
+			# Jei tai nera success packetas, ivyko kazkas blogai, arba ne jo
+			# ejimas
+			if lastData[0] != \"0\":
+				return
+			game_state = GameState.AWAIT_RESPONSE
+		GameState.RESPOND:
+			# Jei tai nera success packetas, ivyko kazkas blogai
+			if lastData[0] != \"0\":
+				return
+			game_state = GameState.ATTACK
+		GameState.AWAIT_ATTACK:
+
+			if lastData[0] != \"2\":
+				# Serveris visada turetu grazinti kokia informacija,
+				# todel jei negrazina ivyko kazkas blogai
+				return
+			if lastData[1] != \"0\":
+				# Serveris siuo metu turetu grazint 0 game
+				# response, kadangi tai yra gautos atakos koordinates
+				return
+			# Gaunam oponento suvio koordinates is response
+			var x = int(lastData[2])
+			var y = int(lastData[3])
+			print(\"Oponentas sove X: %s, Y: %s\" % [x, y])
+			
+			# Cia turetu buti apskaiciuojama ar suvis pataike ir siunciamas
+			# response ar pataike ar ne
+			game_state = GameState.RESPOND
+			_respond_to_enemy_hit(x, y)
+		GameState.AWAIT_RESPONSE:
+			if lastData[0] != \"2\":
+				# Serveris visada turetu grazinti kokia informacija,
+				# todel jei negrazina ivyko kazkas blogai
+				return
+			if lastData[1] != \"1\":
+				# Serveris siuo metu turetu grazint 1 game
+				# response, kadangi tai yra move response data
+				return
+			# Response values: 0 - not hit; 1 - hit; 2 - game end
+			# jei 2, uzbaigti zaidima ir zaidejes gaves si response laimejo
+			match lastData[2]:
+				\"0\":
+					print(\"Sent shot didn't hit\")
+					enemy_board.miss_tile(last_shot_coords)
+					game_state = GameState.AWAIT_ATTACK
+				\"1\":
+					print(\"Sent shot hit\")
+					enemy_board.hit_tile(last_shot_coords)
+					game_state = GameState.AWAIT_ATTACK
+				\"2\":
+					print(\"Sent shot hit and you win\")
+					game_state = GameState.WINNER
+					client.disconnect_from_host()
+		_:
+			# Zaidimas arba neprasidejes arba baigesi
+			print(\"Server error, but got game response from server\")
+
+
+func _handle_client_disconnected() -> void:
+	print(\"Client disconnected from server.\")
+
+
+func _handle_client_error(error: int) -> void:
+	print(\"Client error.\")
 "
 
 [sub_resource type="SystemFont" id="SystemFont_ppoux"]
@@ -38,6 +183,7 @@ position = Vector2(109, 154)
 position = Vector2(110, 558)
 
 [node name="Turn" type="RichTextLabel" parent="."]
+visible = false
 offset_left = 106.0
 offset_top = 34.0
 offset_right = 462.0
@@ -56,6 +202,7 @@ scroll_following = true
 script = ExtResource("3_l36q0")
 
 [node name="Time" type="RichTextLabel" parent="."]
+visible = false
 offset_left = 111.0
 offset_top = 52.0
 offset_right = 460.0
@@ -70,6 +217,13 @@ script = ExtResource("4_tvrrv")
 [node name="Timer" type="Timer" parent="Time"]
 wait_time = 15.0
 autostart = true
+
+[node name="Game_state_label" type="Label" parent="."]
+offset_left = 117.0
+offset_top = 100.0
+offset_right = 162.0
+offset_bottom = 123.0
+text = "Initial"
 
 [connection signal="timeout" from="Time/Timer" to="Turn" method="_on_timer_timeout"]
 [connection signal="timeout" from="Time/Timer" to="Time" method="_on_timer_timeout"]

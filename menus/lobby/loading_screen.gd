@@ -41,13 +41,15 @@ func _handle_client_data(data: Array) -> void:
 func _create_room():
 	if !_client.is_online():
 		return
-		
+	
+	_client.game_state = _client.GameState.ATTACK
 	_client.send("0;%d;0" % _client.PROTOCOL_VERSION)
 	await _client.response
 	#print("Handshake response: ", lastData)
 	_client.send("0")
 	await _client.response
 	print("Empty rooms: ", lastData)
+	
 	
 func _login():
 	if !_client.is_online():
@@ -98,8 +100,8 @@ func _join_room(UIID: String):
 	#print(lastData)
 	if int(lastData[0]) == 0:
 		print("GAME STARTED")
+		_client.game_state = _client.GameState.AWAIT_ATTACK
 		get_tree().change_scene_to_file("res://board/game_board.tscn")
-		#game_state = GameState.AWAIT_ATTACK
 
 func _process(delta):
 	pass

@@ -10,6 +10,9 @@ enum SError {UNKNOWN, INTERNAL, CONNECTION, INVALID_PACKET, INVALID_FIELD, VERSI
 enum DataType {INTEGER, STRING, BOOLEAN, ENUM, ARRAY_INT, ARRAY_STRING}
 enum Response {SUCCESS, ERROR, DATA}
 
+enum GameState {NOT_STARTED, ATTACK, AWAIT_ATTACK, AWAIT_RESPONSE, RESPOND, WINNER, LOSER}
+var game_state = GameState.NOT_STARTED
+
 const PROTOCOL_VERSION = 0;
 var _status: StreamPeerTCP.Status = StreamPeerTCP.Status.STATUS_NONE
 var _stream: StreamPeerTCP = StreamPeerTCP.new()

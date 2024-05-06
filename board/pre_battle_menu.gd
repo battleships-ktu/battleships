@@ -7,9 +7,6 @@ var selected_ship
 var selected_ship_id
 var saved_button
 
-
-	
-
 	
 func _input(event):
 	
