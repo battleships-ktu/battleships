@@ -11,7 +11,7 @@ var ship_array = []
 const WIDTH = 10
 const HEIGHT = 10
 var show_indicator = true
-
+var enable_explosion = true
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tiles = $Tiles
@@ -42,18 +42,23 @@ func _show_bomb_explosion(mouse_position, type_explosive):
 	explosion.position = mouse_position
 
 
-func _unhandled_input(event):
-	if event is InputEventKey:
-		if event.pressed and event.keycode == KEY_UP:
-			tog_explosions=(tog_explosions+1) % 3
-		match tog_explosions:
-			0:
-				main_explosion=null
-			1:
-				main_explosion=bomb_explosion
-			2:
-				main_explosion=water_explosion
 
+
+			
+func _unhandled_input(event):
+	
+	if event is InputEventMouseButton and enable_explosion:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+			var mouse_position = get_viewport().get_mouse_position()
+			var grid_coords = get_tile_grid_position(mouse_position)
+			if grid_coords != null:
+				print(ship_array[grid_coords[1]][grid_coords[0]])
+				indicator.position = to_local(tiles.get_tile_global_position(grid_coords))
+				match ship_array[grid_coords[1]][grid_coords[0]]:
+					0:
+						_show_bomb_explosion(indicator.position, water_explosion)
+					_:
+						_show_bomb_explosion(indicator.position, bomb_explosion)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -76,7 +81,7 @@ func update_indicator():
 		indicator.visible = true
 		indicator.position = to_local(tiles.get_tile_global_position(grid_coords))
 
-		_show_bomb_explosion(indicator.position, main_explosion)
+		#_show_bomb_explosion(indicator.position, main_explosion)
 
 	else:
 		indicator.visible = false
@@ -96,14 +101,14 @@ func get_tile_grid_position(mouse_position):
 
 func get_tile_global_position(grid_position):
 	return tiles.get_tile_global_position(grid_position)
-	
+
 # Sita visa funkcija yra belekoks hackas ir man cia niekas nepatinka
 # bet jei norim speti viska padaryt tures jum tikt >:)
 func set_ships_from_grid(grid):
 	ship_array = grid
 	
 	print(grid)
-	print()
+
 	
 	var battleship = preload("res://board/ships/battleship.tscn").instantiate()
 	var carrier = preload("res://board/ships/carrier.tscn").instantiate()

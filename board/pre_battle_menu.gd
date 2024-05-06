@@ -7,17 +7,25 @@ var selected_ship
 var selected_ship_id
 var saved_button
 
+
+	
+
+	
 func _input(event):
+	
 	if not selected_ship:
 		return
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
+		board.enable_explosion = false
 		selected_ship.rotate_ship()
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		board.enable_explosion = false
 		if selected_ship.try_place_ship(selected_ship, selected_ship_id):
 			detach_ship_from_mouse()
 
 
 func attach_ship_to_mouse(ship, button):
+	
 	if is_selecting_ship:
 		detach_ship_from_mouse()
 		saved_button.show()
@@ -27,6 +35,7 @@ func attach_ship_to_mouse(ship, button):
 	
 	selected_ship = instantiate_mouse_ship(ship)
 	board.show_indicator = false
+
 	add_child(selected_ship)
 
 func instantiate_mouse_ship(ship):
@@ -37,6 +46,7 @@ func instantiate_mouse_ship(ship):
 	mouse_ship.board = board
 	mouse_ship.ship = ship
 	mouse_ship.set_process(true)
+
 	return mouse_ship
 
 
@@ -47,12 +57,17 @@ func detach_ship_from_mouse():
 
 
 func _on_start_game_button_pressed():
+	
+
 	var global_node = get_node("/root/Global")
 	global_node.ship_grid = board.ship_array
+	#global_node.enable_explosion = true
 	get_tree().change_scene_to_file("res://board/game_board.tscn")
 
 
+
 func _on_battleship_button_pressed():
+	#board.enable_explosion = true
 	var ship = preload("res://board/ships/battleship.tscn").instantiate()
 	selected_ship_id = 1
 	attach_ship_to_mouse(ship, $ShipButtonContainer/BattleshipButton)
