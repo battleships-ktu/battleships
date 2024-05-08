@@ -13,6 +13,9 @@ var lastData: PackedStringArray
 
 @onready
 var lobbyContainer = $VBoxContainer
+# Refresh Connect -> Status -> disconnected -> connect
+
+# Login) Connect -> login => create room 
 
 func _ready():
 	_client.connected.connect(_handle_client_connected)
@@ -59,7 +62,7 @@ func _status():
 		var players=lastData[2].split(",")
 		print("Empty rooms: ",rooms)
 		print("Players: ", players)
-
+		Status=3
 		#  Trinti turini is VBoxContainer
 		for child in lobbyContainer.get_children():
 			lobbyContainer.remove_child(child)
@@ -70,14 +73,29 @@ func _status():
 			if (SearchName == "" || players[n] == SearchName):
 				var playerLabel = Label.new()
 				playerLabel.text = players[n]
+				#playerLabel.align = Label.PRESET_CENTER 
 				lobbyContainer.add_child(playerLabel)
 				var joinButton = Button.new()
 				joinButton.text = "Join"
+				
+				
+ # Create a StyleBoxFlat for the rounded button appearance
+				var buttonStyle = StyleBoxFlat.new()
+				buttonStyle.set_border_width_all(2)
+				#buttonStyle.border_width = 2  # Adjust border width as needed
+				buttonStyle.border_color = Color(1, 0, 0)  # Border color
+				buttonStyle.set_corner_radius_all(40)
+				#buttonStyle.border_radius = 10  # Adjust radius to make it rounde
+				
+				joinButton.theme = buttonStyle
+			
+		# Set the custom background style for the button
+		
 				joinButton.connect("pressed", _join_match.bind(rooms[n]))
 				lobbyContainer.add_child(joinButton)
-	
+	else:
 	# Atliekamas Connect -> Login -> Join
-	Status=2
+		Status=2
 
 
 func _join_match(UID):
@@ -100,7 +118,7 @@ func _handle_client_connected() -> void:
 	print("Client connected to server.")
 	if (Status == 0):
 		_status()
-	elif (Status == 1):
+	elif (Status == 2):
 		print("room creation")
 		await _login()
 		_create_room()
@@ -110,7 +128,7 @@ func _handle_client_connected() -> void:
 func _handle_client_disconnected() -> void:
 	print("Client disconnected from server.")
 	# Kai noriu paziureti sarasa atjungia mane
-	if (Status == 2):
+	if (Status == 2 || Status==3):
 		await _connect()
 
 
@@ -131,19 +149,21 @@ func _create_room():
 		get_tree().change_scene_to_file("res://board/pre_battle.tscn")
 
 
-func _on_button_pressed():
-	# Atliekamas Connect -> Login -> Create room
-	Status=1
-	_connect()
-
 
 
 
 func _on_texture_button_pressed():
 	# Atliekamas Connect -> Status
+	#if _client.is_online():
+	#	_client.disconnect_from_host()
 	Status=0
 	_connect()
 
 
 func _on_line_edit_text_changed(new_text):
 	SearchName=new_text
+
+
+func _on_back_pressed():
+
+	get_tree().change_scene_to_file("res://menus/menu.tscn")

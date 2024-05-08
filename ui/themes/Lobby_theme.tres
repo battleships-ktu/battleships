@@ -1,0 +1,19 @@
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://dy0gejp1jddqd"]
+
+[ext_resource type="FontFile" uid="uid://v4a1odgcux7h" path="res://ui/fonts/3270Condensed-Regular.ttf" id="1_kblxu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bpaji"]
+bg_color = Color(0, 0.447059, 0.0980392, 0.662745)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o7uro"]
+bg_color = Color(0.176471, 0.176471, 0.176471, 0.603922)
+
+[resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/font_sizes/font_size = 22
+Button/fonts/font = ExtResource("1_kblxu")
+Button/styles/hover = SubResource("StyleBoxFlat_bpaji")
+Button/styles/normal = SubResource("StyleBoxFlat_o7uro")
+Button/styles/pressed = SubResource("StyleBoxFlat_bpaji")
+Label/font_sizes/font_size = 23
+Label/fonts/font = ExtResource("1_kblxu")

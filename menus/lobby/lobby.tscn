@@ -1,32 +1,95 @@
-[gd_scene load_steps=4 format=3 uid="uid://b335dbvkdx73h"]
+[gd_scene load_steps=10 format=3 uid="uid://b335dbvkdx73h"]
 
 [ext_resource type="Script" path="res://menus/lobby/lobby.gd" id="1_wr7y4"]
+[ext_resource type="Texture2D" uid="uid://csyb801jxfcmh" path="res://assets/main_menu/lobby/radar grid.jpg" id="2_ijixy"]
+[ext_resource type="Theme" uid="uid://dy0gejp1jddqd" path="res://ui/themes/Lobby_theme.tres" id="2_wsc3v"]
+[ext_resource type="Shader" path="res://shaders/crt.gdshader" id="3_38u75"]
 [ext_resource type="Texture2D" uid="uid://eutwpqboatx6" path="res://assets/buttons/refresh.png" id="3_e3nvq"]
+[ext_resource type="FontFile" uid="uid://v4a1odgcux7h" path="res://ui/fonts/3270Condensed-Regular.ttf" id="4_ileqy"]
 [ext_resource type="Texture2D" uid="uid://c4aqtwkmmdspx" path="res://assets/buttons/image.png" id="4_qejd1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n0ub3"]
+shader = ExtResource("3_38u75")
+shader_parameter/overlay = false
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(640, 480)
+shader_parameter/pixelate = true
+shader_parameter/roll = true
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.4
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 0.03
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 1.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.5
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_j7l5h"]
 
 [node name="Node" type="Node2D"]
 script = ExtResource("1_wr7y4")
 
-[node name="Button" type="Button" parent="."]
-offset_left = 115.0
-offset_top = 152.0
-offset_right = 232.0
-offset_bottom = 179.0
-text = "Login"
+[node name="background2" type="TextureRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+offset_right = 582.0
+offset_bottom = 1028.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_ijixy")
+expand_mode = 4
 
-[node name="Button2" type="Button" parent="."]
-visible = false
-offset_left = 357.0
-offset_top = 349.0
-offset_right = 475.0
-offset_bottom = 388.0
-text = "Refesh"
+[node name="background" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_n0ub3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -1.0
+offset_right = 582.0
+offset_bottom = 1029.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("PlaceholderTexture2D_j7l5h")
+expand_mode = 4
+
+[node name="LineEdit" type="LineEdit" parent="."]
+offset_left = 107.0
+offset_top = 197.0
+offset_right = 398.0
+offset_bottom = 228.0
+theme = ExtResource("2_wsc3v")
+theme_override_fonts/font = ExtResource("4_ileqy")
+theme_override_font_sizes/font_size = 22
+placeholder_text = "Player name"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_left = 92.0
-offset_top = 330.0
-offset_right = 519.0
-offset_bottom = 977.0
+offset_left = 117.0
+offset_top = 262.0
+offset_right = 494.0
+offset_bottom = 832.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("2_wsc3v")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_right = 568.0
+offset_bottom = 86.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 
 [node name="TextureButton" type="TextureButton" parent="."]
 anchors_preset = 8
@@ -34,26 +97,27 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 378.0
-offset_top = 150.0
-offset_right = 428.0
-offset_bottom = 193.0
+offset_left = 418.0
+offset_top = 182.0
+offset_right = 477.0
+offset_bottom = 253.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
+size_flags_vertical = 4
 texture_normal = ExtResource("3_e3nvq")
 texture_hover = ExtResource("4_qejd1")
 ignore_texture_size = true
 stretch_mode = 5
 
-[node name="LineEdit" type="LineEdit" parent="."]
-offset_left = 117.0
-offset_top = 211.0
-offset_right = 455.0
-offset_bottom = 242.0
-placeholder_text = "Player name"
+[node name="Back" type="Button" parent="."]
+offset_left = 437.0
+offset_top = 960.0
+offset_right = 550.0
+offset_bottom = 992.0
+theme = ExtResource("2_wsc3v")
+text = "Back"
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="Button2" to="." method="_on_button_2_pressed"]
-[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]
 [connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
