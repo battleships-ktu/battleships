@@ -34,31 +34,34 @@ shader_parameter/vignette_opacity = 0.5
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_j7l5h"]
 
-[node name="Node" type="Node2D"]
-script = ExtResource("1_wr7y4")
-
-[node name="background2" type="TextureRect" parent="."]
+[node name="Node" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -2.0
-offset_right = 582.0
-offset_bottom = 1028.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wr7y4")
+
+[node name="background2" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("2_ijixy")
-expand_mode = 4
+expand_mode = 1
+stretch_mode = 6
 
 [node name="background" type="TextureRect" parent="."]
 material = SubResource("ShaderMaterial_n0ub3")
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -1.0
-offset_right = 582.0
-offset_bottom = 1029.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -66,17 +69,26 @@ size_flags_vertical = 4
 texture = SubResource("PlaceholderTexture2D_j7l5h")
 expand_mode = 4
 
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 568.0
+offset_bottom = 86.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
 [node name="LineEdit" type="LineEdit" parent="."]
-offset_left = 107.0
-offset_top = 197.0
-offset_right = 398.0
-offset_bottom = 228.0
+layout_mode = 0
+offset_left = 116.0
+offset_top = 199.0
+offset_right = 407.0
+offset_bottom = 230.0
 theme = ExtResource("2_wsc3v")
 theme_override_fonts/font = ExtResource("4_ileqy")
 theme_override_font_sizes/font_size = 22
 placeholder_text = "Player name"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 117.0
 offset_top = 262.0
 offset_right = 494.0
@@ -85,22 +97,17 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_wsc3v")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-offset_right = 568.0
-offset_bottom = 86.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
 [node name="TextureButton" type="TextureButton" parent="."]
+layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 418.0
-offset_top = 182.0
-offset_right = 477.0
-offset_bottom = 253.0
+offset_left = 137.0
+offset_top = -325.0
+offset_right = 184.0
+offset_bottom = -272.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -111,10 +118,11 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="Back" type="Button" parent="."]
-offset_left = 437.0
-offset_top = 960.0
-offset_right = 550.0
-offset_bottom = 992.0
+layout_mode = 0
+offset_left = 446.0
+offset_top = 977.0
+offset_right = 559.0
+offset_bottom = 1009.0
 theme = ExtResource("2_wsc3v")
 text = "Back"
 
