@@ -1,111 +1,142 @@
-extends Node
-const HOST: String = "localhost"
-const PORT: int = 24845
-var UID = ""
-var EXIT = false
+extends Control
+var rooms
+#var players
+@onready var PlayerName = get_node("/root/Data").NAME
+#const HOST: String = "localhost"
+#const PORT: int = 24845
+#var HOST
+#var PORT
+var Status
 
-@onready
-var _client = get_node("/root/TCPClient")
+@onready var HOST = get_node("/root/Data").HOST
+@onready var PORT = get_node("/root/Data").PORT
+@onready var _client = get_node("/root/TCPClient")
 var lastData: PackedStringArray
 
+@onready
+var lobbyContainer = $VBoxContainer
+# Refresh Connect -> Status -> disconnected -> connect
 
-func _ready() -> void:
+# Login) Connect -> login => create room 
+
+func _ready():
+	
+	print(HOST)
+	print(PORT)
+
 	_client.connected.connect(_handle_client_connected)
 	_client.disconnected.connect(_handle_client_disconnected)
 	_client.errored.connect(_handle_client_error)
 	_client.response.connect(_handle_client_data)
+	_initial_start()
 	
-	_connect()
 
-func _get_list_of_rooms():
-	if !_client.is_online():
-		return
-		
-	_client.send("0;%d;0" % _client.PROTOCOL_VERSION)
-	await _client.response
-	#print("Handshake response: ", lastData)
-	_client.send("0")
-	await _client.response
-	print("Empty rooms: ", lastData)
-	
-	if lastData[1] != "":
-			print("Theres a room ", lastData[1])
-			UID = lastData[1]
-	else:
-		UID = null
 
-func _handle_client_data(data: Array) -> void:
-	lastData = data
 
-		
-func _create_room():
-	if !_client.is_online():
-		return
-	
-	_client.game_state = _client.GameState.ATTACK
-	_client.send("0;%d;0" % _client.PROTOCOL_VERSION)
-	await _client.response
-	#print("Handshake response: ", lastData)
-	_client.send("0")
-	await _client.response
-	print("Empty rooms: ", lastData)
-	
-	
+func _handle_client_error(error: int) -> void:
+	print("Client error.")
+
+func _connect() -> void:
+	_client.connect_to_host(HOST, PORT)
+
 func _login():
 	if !_client.is_online():
 		return
 		
 	_client.send("0;%d;1" % _client.PROTOCOL_VERSION)
 	await _client.response
-	#print("Handshake response: ", lastData)
-	_client.send("0;Test name")
+	print("Handshake response: ", lastData)
+	# Testing
+	#var random_number = randi() % 101
+	#_client.send("0;"+PlayerName+""+str(random_number))
+	_client.send("0;"+PlayerName)
 	await _client.response
 	print("Login response: ", lastData)
+
+func _status():
+	print(" _status()")
+	if !_client.is_online():
+		return
+		
+	_client.send("0;%d;0" % _client.PROTOCOL_VERSION)
+	await _client.response
+	print("Handshake response: ", lastData)
+	_client.send("0")
+	await _client.response
+	
+	if (lastData.size() > 2):
+		rooms= lastData[1].split(",")[0]
+		#players=lastData[2].split(",")[0]
+		
+		Status=3
+
+		
+	else:
+	# Atliekamas Connect -> Login -> Join
+		Status=2
+
+
+func _join_match(UID):
+	await _login()
+	
+	print("Joining room:", UID)
+	_client.send("1;%s" % UID)
+	await _client.response
+	print("Game start response: ", lastData)
+	if lastData[0] == "0":
+		print("GAME STARTED")
+		_client.game_state = _client.GameState.AWAIT_ATTACK
+		get_tree().change_scene_to_file("res://board/pre_battle.tscn")
+
+func _handle_client_data(data: Array) -> void:
+	lastData = data
+
+	
+func _handle_client_connected() -> void:
+	print("Client connected to server.")
+	if (Status == 0):
+		_status()
+	elif (Status == 2):
+		print("room creation")
+		await _login()
+		_create_room()
+	elif (Status == 3):
+		_join_match(rooms)
+
 
 
 func _handle_client_disconnected() -> void:
 	print("Client disconnected from server.")
-	if ! EXIT:
-		_connect()
+	# Kai noriu paziureti sarasa atjungia mane
+	if (Status == 2 || Status==3):
+		await _connect()
 
-
-func _handle_client_error() -> void:
-	print("Client err.")
-
-func _handle_client_connected() -> void:
-	print("Client connected to server.")
-	
-	if UID == "":
-		_get_list_of_rooms()
-		
-	elif UID == null:
-		print("trying to login")
-		_login()
-		print("Creating room ")
-		_create_room()
-	else:
-		_login()
-		_join_room(UID)
-		
-func _connect():
-	_client.connect_to_host(HOST, PORT)
-	
-func _join_room(UIID: String):
-	if !_client.is_online():
-		return		
-	# Serveriui duodamas room UID prie kurio prisijungti
-	_client.send("1;%s" % UIID)
-	await _client.response
-	print("Game start response main: ", lastData[0])
-	#print(lastData)
-	if int(lastData[0]) == 0:
-		print("GAME STARTED")
-		_client.game_state = _client.GameState.AWAIT_ATTACK
-		get_tree().change_scene_to_file("res://board/game_board.tscn")
 
 func _process(delta):
 	pass
 
+func _create_room():
+	if !_client.is_online():
+		return
+	_client.send("0")
+	await _client.response
+	print("Room created: ", lastData)
+	await _client.response
+	print("Opponent connected: ", lastData)
+	if lastData[0] == "0":
+		print("GAME STARTED")
+		_client.game_state = _client.GameState.ATTACK
+		get_tree().change_scene_to_file("res://board/pre_battle.tscn")
+
+
+
+
+
+func _initial_start():
+	Status=0
+	_connect()
+
+
+
 func _on_cancel_pressed():
-	EXIT=true
 	get_tree().change_scene_to_file("res://menus/menu.tscn")

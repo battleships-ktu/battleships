@@ -83,6 +83,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("5_uuxht")
 theme_override_font_sizes/font_size = 70
-text = "Cancel"
+text = "Back"
 
 [connection signal="pressed" from="VBoxContainer/Cancel" to="." method="_on_cancel_pressed"]

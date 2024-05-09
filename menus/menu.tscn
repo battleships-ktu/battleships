@@ -75,10 +75,9 @@ custom_minimum_size = Vector2(120, 32)
 layout_mode = 2
 text = "Start game"
 
-[node name="Multiplayer" type="Button" parent="Menu/VBoxContainer/VBoxContainer"]
-visible = false
+[node name="Search" type="Button" parent="Menu/VBoxContainer/VBoxContainer"]
 layout_mode = 2
-text = "Multiplayer"
+text = "Search"
 
 [node name="Options" type="Button" parent="Menu/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 32)
@@ -152,7 +151,7 @@ text = "Back
 "
 
 [connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Start game" to="." method="_on_start_game_pressed"]
-[connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Multiplayer" to="." method="_on_multiplayer_pressed"]
+[connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Search" to="." method="_on_search_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
 [connection signal="text_changed" from="Options/VBoxContainer/VBoxContainer/Name_line" to="." method="_on_name_line_text_changed"]

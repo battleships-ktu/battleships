@@ -32,7 +32,7 @@ func _ready() -> void:
 
 
 func _on_start_game_pressed():
-	get_tree().change_scene_to_file("res://menus/lobby/lobby.tscn")
+	get_tree().change_scene_to_file("res://menus/lobby/loading_sreen.tscn")
 func _on_back_pressed():
 	move_to_prev()
 
@@ -76,8 +76,6 @@ func get_menu_id(menu_id: String) -> Container:
 			return menu_1
 
 
-func _on_multiplayer_pressed():
-	get_tree().change_scene_to_file("res://menus/lobby/room.tscn")
 
 
 func _on_host_line_text_changed(new_text):
@@ -91,3 +89,7 @@ func _on_port_line_2_text_changed(new_text):
 
 func _on_name_line_text_changed(new_text):
 	DATA.NAME=new_text
+
+
+func _on_search_pressed():
+	get_tree().change_scene_to_file("res://menus/lobby/lobby.tscn")
