@@ -20,6 +20,8 @@ config/icon="res://icon.svg"
 TCPClient="*res://server/server.gd"
 Global="res://board/global.gd"
 PreBattle="res://board/pre_battle_menu.gd"
+Menu="*res://menus/Menu.gd"
+Data="*res://menus/config_data.gd"
 
 [display]
 

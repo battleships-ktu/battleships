@@ -1,14 +1,16 @@
 extends Control
 
 var SearchName=""
-var PlayerName="Shrek"
-const HOST: String = "localhost"
-const PORT: int = 24845
+@onready var PlayerName = get_node("/root/Data").NAME
+#const HOST: String = "localhost"
+#const PORT: int = 24845
+#var HOST
+#var PORT
 var Status
 
-
-@onready
-var _client = get_node("/root/TCPClient")
+@onready var HOST = get_node("/root/Data").HOST
+@onready var PORT = get_node("/root/Data").PORT
+@onready var _client = get_node("/root/TCPClient")
 var lastData: PackedStringArray
 
 @onready
@@ -18,6 +20,14 @@ var lobbyContainer = $VBoxContainer
 # Login) Connect -> login => create room 
 
 func _ready():
+	
+	print(HOST)
+	print(PORT)
+	#HOST=get_tree().current_scene.get_node("res://menus/menu.tscn")
+	#HOST.HOST
+	#PORT=get_tree().current_scene.get_node("res://menus/menu.tscn")
+	#PORT.PORT
+	#get_tree().change_scene_to_file("res://menus/lobby/room.tscn")
 	_client.connected.connect(_handle_client_connected)
 	_client.disconnected.connect(_handle_client_disconnected)
 	_client.errored.connect(_handle_client_error)

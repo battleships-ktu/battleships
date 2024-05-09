@@ -4,11 +4,27 @@ var menu_posituion := Vector2.ZERO
 var menu_size := Vector2.ZERO
 var current_menu
 var menu_stackii := []
+@onready var Name_line = $Options/VBoxContainer/VBoxContainer/Name_line
+@onready var HOST_line = $Options/VBoxContainer/VBoxContainer/Host_line
+@onready var PORT_line = $Options/VBoxContainer/VBoxContainer/Port_line
 @onready var menu_1 = $Menu
 @onready var menu_2 = $Options
+#var HOST: String = "localhost"
+#var PORT: int = 24845
+@onready var DATA = get_node("/root/Data")
+
 #@onready var tween = create_tween()
 func _ready() -> void:
 	#get_tree().change_scene_to_file("res://menus/options_menu.tscn")
+	if DATA.NAME == "":
+		DATA.NAME="PLayer"
+	if DATA.HOST == "":
+		DATA.HOST="localhost" 
+	if DATA.HOST == "":
+		DATA.HOST="localhost" 
+	if DATA.PORT == 0:
+		DATA.PORT=24845
+
 	menu_posituion = Vector2(0,0)
 	menu_size = get_viewport_rect().size
 	current_menu = menu_1
@@ -16,14 +32,17 @@ func _ready() -> void:
 
 
 func _on_start_game_pressed():
-	#get_tree().change_scene_to_file("res://board/pre_battle.tscn")
 	get_tree().change_scene_to_file("res://menus/lobby/lobby.tscn")
 func _on_back_pressed():
 	move_to_prev()
 
 
 func _on_options_pressed():
+	HOST_line.text=DATA.HOST
+	PORT_line.text=str(DATA.PORT)
+	Name_line.text=DATA.NAME
 	move_to_next("menu_2")
+
 
 
 func _on_exit_pressed():
@@ -59,3 +78,16 @@ func get_menu_id(menu_id: String) -> Container:
 
 func _on_multiplayer_pressed():
 	get_tree().change_scene_to_file("res://menus/lobby/room.tscn")
+
+
+func _on_host_line_text_changed(new_text):
+	DATA.HOST=new_text
+
+
+
+func _on_port_line_2_text_changed(new_text):
+	DATA.PORT=new_text
+
+
+func _on_name_line_text_changed(new_text):
+	DATA.NAME=new_text
