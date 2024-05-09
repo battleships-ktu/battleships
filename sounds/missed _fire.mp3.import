@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bn7uear8qtjen"
+path="res://.godot/imported/missed _fire.mp3-bc8e22bdd69777981a535ba154319a43.mp3str"
+
+[deps]
+
+source_file="res://sounds/missed _fire.mp3"
+dest_files=["res://.godot/imported/missed _fire.mp3-bc8e22bdd69777981a535ba154319a43.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
