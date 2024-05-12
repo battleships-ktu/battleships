@@ -20,6 +20,7 @@ offset_left = 335.0
 offset_top = 953.0
 offset_right = 559.0
 offset_bottom = 1004.0
+disabled = true
 text = "Start Game"
 
 [node name="ShipButtonContainer" type="HBoxContainer" parent="."]

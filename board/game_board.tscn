@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ca0mfyil4am0c"]
+[gd_scene load_steps=13 format=3 uid="uid://ca0mfyil4am0c"]
 
 [ext_resource type="PackedScene" uid="uid://dydf7lluj5inn" path="res://board/boards/player_board.tscn" id="2_xpcow"]
 [ext_resource type="PackedScene" uid="uid://ulg81q1w5xep" path="res://board/boards/enemy_board.tscn" id="3_cj0ar"]
@@ -9,8 +9,6 @@
 [ext_resource type="AudioStream" uid="uid://7yi7n6m01qaq" path="res://sounds/cannon_fire.mp3" id="7_d2asf"]
 [ext_resource type="AudioStream" uid="uid://bn7uear8qtjen" path="res://sounds/missed _fire.mp3" id="8_1crjm"]
 [ext_resource type="AudioStream" uid="uid://bdwy0x5cdokbu" path="res://sounds/Sinking.mp3" id="9_r74jv"]
-[ext_resource type="AudioStream" uid="uid://ebitq5ehk856" path="res://sounds/win.mp3" id="10_tdtgh"]
-[ext_resource type="AudioStream" uid="uid://c68pqndjcjpk4" path="res://sounds/lose.mp3" id="11_kpamx"]
 
 [sub_resource type="GDScript" id="GDScript_rmegk"]
 script/source = "extends Node2D
@@ -23,8 +21,6 @@ script/source = "extends Node2D
 @onready var sinking = $Sinking
 @onready var missed = $Missed_fire
 @onready var fire = $Cannon_fire
-@onready var win = $Win
-@onready var lose = $Lost
 var game_state
 var GameState
 
@@ -32,6 +28,7 @@ var last_game_state
 var lastData: PackedStringArray
 
 var last_shot_coords
+var should_pass_turn = false;
 
 
 func _ready():
@@ -59,18 +56,16 @@ func _process(_delta):
 		GameState.NOT_STARTED:
 			text = \"Not started NOT_STARTED\"
 		GameState.ATTACK:
-			text = \"Attack ATTACK\"
+			text = \"Your turn to attack!\"
 		GameState.AWAIT_ATTACK:
-			text = \"Waiting for an attack from opponent AWAIT_ATTACK\"
+			text = \"Opponent's turn\"
 		GameState.AWAIT_RESPONSE:
-			text = \"Waiting for a response from opponent AWAIT_RESPONSE\"
+			text = \"Waiting for opponent's response to your attack\"
 		GameState.RESPOND:
-			text = \"Respond to opponent whether shot hit RESPOND\"
+			text = \"Sending your attack\"
 		GameState.WINNER:
-			win.play()
 			text = \"You won WINNER\"
 		GameState.LOSER:
-			lose.play()
 			text = \"You lost LOSER\"
 		_:
 			text = \"ERROR\"
@@ -90,26 +85,42 @@ func _on_strike(c):
 	if (game_state != GameState.ATTACK):
 		# Tai galima siusti tik, kai turi siunti bomba
 		return
-		
+	OS.delay_msec(100)
 	# Siusti koordinates kur saunama, pirmas response success, antras
 	# grazinamas kai gaunamas response is oponento ar pataike
 	last_shot_coords = c
 	client.send(\"0;%s;%s\" % [c.x, c.y])
+	if c != Vector2i(42, 42):
+		fire.play()
+		global_node.fired_shots += 1;
 
 
 func _respond_to_enemy_hit(x, y):
 	if !client.is_online():
 		return
 	if (game_state != GameState.RESPOND):
-		# Tai galima siusti tik, kai zaidejas turi atsakyti ar oponentas pataike
+		# Tai galima siusti tik, kai zaidejas turi atsakyti ar oponentas pataikez
+		return
+		
+	if (x == 42 && y == 42): # Hackas
+		client.send(\"1;0\")
+		should_pass_turn = false
 		return
 		
 	if player_board.ship_array[y][x] != 0:
 		player_board.hit_tile(Vector2i(x,y))
+		global_node.tiles_left -= 1
+		if global_node.tiles_left == 0:
+			client.send(\"1;2\") # emili plz fix
+			client.disconnect_from_host()
+			get_tree().change_scene_to_file(\"res://finish/defeat.tscn\")
+			
 		client.send(\"1;1\")
+		should_pass_turn = true
 	else:
 		player_board.miss_tile(Vector2i(x,y))
 		client.send(\"1;0\")
+		should_pass_turn = false
 
 
 func handle_game_response():
@@ -125,8 +136,11 @@ func handle_game_response():
 			if lastData[0] != \"0\":
 				return
 			game_state = GameState.ATTACK
+			if should_pass_turn:
+				# Čia yra belekoks hackas, nes emilio serveris neleidzia dvieju ataku is eiles daryt
+				# tai tiesiog per prievarta darom ataka i neegzistuojancias koordinates
+				_on_strike(Vector2i(42,42))
 		GameState.AWAIT_ATTACK:
-
 			if lastData[0] != \"2\":
 				# Serveris visada turetu grazinti kokia informacija,
 				# todel jei negrazina ivyko kazkas blogai
@@ -139,7 +153,6 @@ func handle_game_response():
 			var x = int(lastData[2])
 			var y = int(lastData[3])
 			print(\"Oponentas sove X: %s, Y: %s\" % [x, y])
-			fire.play()
 			# Cia turetu buti apskaiciuojama ar suvis pataike ir siunciamas
 			# response ar pataike ar ne
 			game_state = GameState.RESPOND
@@ -157,19 +170,26 @@ func handle_game_response():
 			# jei 2, uzbaigti zaidima ir zaidejes gaves si response laimejo
 			match lastData[2]:
 				\"0\":
-					print(\"Sent shot didn't hit\")
-				
+					if last_shot_coords == Vector2i(42, 42):
+						#print(\"Skipping turn\")
+						should_pass_turn = false
+						game_state = GameState.AWAIT_ATTACK
+						return
+						
+					#print(\"Sent shot didn't hit\")
 					missed.play()
 					enemy_board.miss_tile(last_shot_coords)
 					game_state = GameState.AWAIT_ATTACK
+					global_node.missed_shots += 1;
+					should_pass_turn = true
 				\"1\":
-					print(\"Sent shot hit\")
+					#print(\"Sent shot hit\")
 					explosion_sound.play()
 					enemy_board.hit_tile(last_shot_coords)
 					game_state = GameState.AWAIT_ATTACK
+					should_pass_turn = false
 				\"2\":
-					print(\"Sent shot hit and you win\")
-					
+					#print(\"Sent shot hit and you win\")
 					game_state = GameState.WINNER
 					client.disconnect_from_host()
 		_:
@@ -256,12 +276,6 @@ stream = ExtResource("8_1crjm")
 
 [node name="Sinking" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("9_r74jv")
-
-[node name="Win" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("10_tdtgh")
-
-[node name="Lost" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("11_kpamx")
 
 [connection signal="timeout" from="Time/Timer" to="Turn" method="_on_timer_timeout"]
 [connection signal="timeout" from="Time/Timer" to="Time" method="_on_timer_timeout"]

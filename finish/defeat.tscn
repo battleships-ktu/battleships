@@ -1,10 +1,30 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgs5dlw5swduu"]
+[gd_scene load_steps=6 format=3 uid="uid://bgs5dlw5swduu"]
 
 [ext_resource type="Texture2D" uid="uid://cfuyy1e1ek5xl" path="res://finish/defeat (2).jpeg" id="1_5ij4i"]
 [ext_resource type="FontVariation" uid="uid://beb3qvqoyrr5b" path="res://finish.tres" id="2_eepew"]
 [ext_resource type="FontFile" uid="uid://ccxnv8q4bwpfg" path="res://Vampire Wars.ttf" id="2_r2ocb"]
+[ext_resource type="AudioStream" uid="uid://c68pqndjcjpk4" path="res://sounds/lose.mp3" id="3_e4imi"]
+
+[sub_resource type="GDScript" id="GDScript_mmrvw"]
+resource_name = "defeat"
+script/source = "extends Node2D
+@onready var global_node = get_node(\"/root/Global\")
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	$Lose.play()
+	$Info.text  = \"Total shots: {0}\\n\".format([global_node.fired_shots])
+	$Info.text += \"       Hits: {0}\\n\".format([global_node.missed_shots])
+	$Info.text += \"     Misses: {0}\\n\".format([global_node.hit_shots])
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	pass
+"
 
 [node name="Defeat" type="Node2D"]
+script = SubResource("GDScript_mmrvw")
 
 [node name="Defeat" type="Sprite2D" parent="."]
 position = Vector2(299, 515)
@@ -21,13 +41,14 @@ theme_override_font_sizes/normal_font_size = 70
 bbcode_enabled = true
 text = "[center]DEFEAT[/center]"
 
-[node name="defeat_info" type="RichTextLabel" parent="."]
+[node name="Info" type="RichTextLabel" parent="."]
 offset_left = 72.0
 offset_top = 153.0
 offset_right = 522.0
-offset_bottom = 306.0
+offset_bottom = 514.0
 theme_override_fonts/normal_font = ExtResource("2_eepew")
 theme_override_font_sizes/normal_font_size = 40
 bbcode_enabled = true
-text = "[center]Some info...
-More info...[/center]"
+
+[node name="Lose" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_e4imi")

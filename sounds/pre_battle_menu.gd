@@ -1,12 +1,13 @@
 extends Node2D
 
 @onready var board = $PlayerBoard
+@onready var global_node = get_node("/root/Global")
 
 var is_selecting_ship = false
 var selected_ship
 var selected_ship_id
 var saved_button
-
+var ships_left = 4
 	
 func _input(event):
 	
@@ -19,6 +20,13 @@ func _input(event):
 		board.enable_explosion = false
 		if selected_ship.try_place_ship(selected_ship, selected_ship_id):
 			detach_ship_from_mouse()
+			ships_left -= 1
+			if ships_left == 0:
+				$StartGameButton.disabled = false
+
+
+func _on_ready():
+	global_node.reset()
 
 
 func attach_ship_to_mouse(ship, button):

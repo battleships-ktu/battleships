@@ -12,6 +12,7 @@ const WIDTH = 10
 const HEIGHT = 10
 var show_indicator = true
 var enable_explosion = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	tiles = $Tiles

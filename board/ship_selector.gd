@@ -17,6 +17,8 @@ var ship_half_height
 var position_offset
 #var _old_transfrom #hacky terrible solution, but i don't care
 
+@onready var global_node = get_node("/root/Global")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	texture = ship.texture
@@ -90,10 +92,8 @@ func try_place_ship(ship_selector, shipId):
 	for ship_row in ship_height:
 		for ship_col in ship_width:
 			board.ship_array[ship_row + target_y][ship_col + target_x] = shipId
+			global_node.tiles_left += 1;
 			
-	for y in 10:
-		print(board.ship_array[y])
-	print()
 	
 	#Spawn ship: create ship sprite (košė makalošė, bet idc)
 	var new_ship = Sprite2D.new()
