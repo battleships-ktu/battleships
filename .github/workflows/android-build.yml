@@ -3,9 +3,14 @@ jobs:
   pass-secret-to-action:
     runs-on: ubuntu-latest
     steps:
-      - name: godot-android-builder
-        uses: croconut/godot-multi-builder@v1
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
         with:
-                    names: "Android"
-                    path-to-game: ./
-                    debug-mode: true
+          java-version: '17'
+          distribution: 'temurin'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+     
+      - name: Build SampleApplication
+        run: ./gradlew --no-daemon build
