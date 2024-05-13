@@ -1,5 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://ca0mfyil4am0c"]
+[gd_scene load_steps=18 format=3 uid="uid://ca0mfyil4am0c"]
 
+[ext_resource type="Shader" path="res://shaders/wave.gdshader" id="1_e6k36"]
 [ext_resource type="PackedScene" uid="uid://dydf7lluj5inn" path="res://board/boards/player_board.tscn" id="2_xpcow"]
 [ext_resource type="PackedScene" uid="uid://ulg81q1w5xep" path="res://board/boards/enemy_board.tscn" id="3_cj0ar"]
 [ext_resource type="Script" path="res://board/Turn.gd" id="3_l36q0"]
@@ -9,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://7yi7n6m01qaq" path="res://sounds/cannon_fire.mp3" id="7_d2asf"]
 [ext_resource type="AudioStream" uid="uid://bn7uear8qtjen" path="res://sounds/missed _fire.mp3" id="8_1crjm"]
 [ext_resource type="AudioStream" uid="uid://bdwy0x5cdokbu" path="res://sounds/Sinking.mp3" id="9_r74jv"]
+[ext_resource type="Texture2D" uid="uid://djtal6lqdr7we" path="res://assets/board/attack_sign.png" id="11_mcaw8"]
 
 [sub_resource type="GDScript" id="GDScript_rmegk"]
 script/source = "extends Node2D
@@ -21,6 +23,10 @@ script/source = "extends Node2D
 @onready var sinking = $Sinking
 @onready var missed = $Missed_fire
 @onready var fire = $Cannon_fire
+
+var sign_attack_tex = load(\"res://assets/board/attack_sign.png\")
+var sign_wait_tex = load(\"res://assets/board/wait_sign.png\")
+
 var game_state
 var GameState
 
@@ -54,23 +60,21 @@ func _process(_delta):
 	last_game_state = game_state
 	match game_state:
 		GameState.NOT_STARTED:
-			text = \"Not started NOT_STARTED\"
+			$StateSign.texture = sign_wait_tex
 		GameState.ATTACK:
-			text = \"Your turn to attack!\"
+			$StateSign.texture = sign_attack_tex
 		GameState.AWAIT_ATTACK:
-			text = \"Opponent's turn\"
+			$StateSign.texture = sign_wait_tex
 		GameState.AWAIT_RESPONSE:
-			text = \"Waiting for opponent's response to your attack\"
+			$StateSign.texture = sign_wait_tex
 		GameState.RESPOND:
-			text = \"Sending your attack\"
+			$StateSign.texture = sign_wait_tex
 		GameState.WINNER:
-			text = \"You won WINNER\"
+			$StateSign.texture = sign_wait_tex
 		GameState.LOSER:
-			text = \"You lost LOSER\"
+			$StateSign.texture = sign_wait_tex
 		_:
-			text = \"ERROR\"
-			
-	$Game_state_label.text = text
+			$StateSign.texture = sign_wait_tex
 
 
 func _handle_client_data(data: Array) -> void:
@@ -206,6 +210,20 @@ func _handle_client_error(error: int) -> void:
 	print(\"Client error.\")
 "
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1i6ju"]
+shader = ExtResource("1_e6k36")
+shader_parameter/WATER_COL = Color(0.176471, 0.635294, 0.85098, 1)
+shader_parameter/WATER2_COL = Color(0.0588235, 0.529412, 0.776471, 1)
+shader_parameter/FOAM_COL = Color(0.87451, 0.988235, 1, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(5, 5)
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_0mp01"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_0a1j7"]
+gradient = SubResource("Gradient_0mp01")
+
 [sub_resource type="SystemFont" id="SystemFont_ppoux"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wstpo"]
@@ -214,11 +232,24 @@ func _handle_client_error(error: int) -> void:
 texture_filter = 1
 script = SubResource("GDScript_rmegk")
 
+[node name="wave" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_1i6ju")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 576.0
+offset_bottom = 1024.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_0a1j7")
+
 [node name="PlayerBoard" parent="." instance=ExtResource("2_xpcow")]
-position = Vector2(109, 154)
+position = Vector2(55, 98)
+scale = Vector2(1.3, 1.3)
 
 [node name="EnemyBoard" parent="." instance=ExtResource("3_cj0ar")]
-position = Vector2(110, 558)
+position = Vector2(55, 558)
+scale = Vector2(1.3, 1.3)
 
 [node name="Turn" type="RichTextLabel" parent="."]
 visible = false
@@ -256,13 +287,6 @@ script = ExtResource("4_tvrrv")
 wait_time = 15.0
 autostart = true
 
-[node name="Game_state_label" type="Label" parent="."]
-offset_left = 117.0
-offset_top = 100.0
-offset_right = 162.0
-offset_bottom = 123.0
-text = "Initial"
-
 [node name="Explosion_sound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("6_ngicy")
 volume_db = -14.258
@@ -277,6 +301,11 @@ stream = ExtResource("8_1crjm")
 
 [node name="Sinking" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("9_r74jv")
+
+[node name="StateSign" type="Sprite2D" parent="."]
+position = Vector2(297, 34)
+scale = Vector2(0.554455, 0.554455)
+texture = ExtResource("11_mcaw8")
 
 [connection signal="timeout" from="Time/Timer" to="Turn" method="_on_timer_timeout"]
 [connection signal="timeout" from="Time/Timer" to="Time" method="_on_timer_timeout"]

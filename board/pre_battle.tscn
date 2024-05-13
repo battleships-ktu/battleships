@@ -1,21 +1,56 @@
-[gd_scene load_steps=7 format=3 uid="uid://cbki7t0q0rudt"]
+[gd_scene load_steps=12 format=3 uid="uid://cbki7t0q0rudt"]
 
 [ext_resource type="Script" path="res://sounds/pre_battle_menu.gd" id="1_sthaj"]
+[ext_resource type="Shader" path="res://shaders/wave.gdshader" id="2_0q76x"]
 [ext_resource type="PackedScene" uid="uid://dydf7lluj5inn" path="res://board/boards/player_board.tscn" id="2_pppge"]
 [ext_resource type="Texture2D" uid="uid://cp0sy3ja2hlgt" path="res://assets/ships/Battleship/ShipBattleshipHull.png" id="3_7lq2q"]
+[ext_resource type="Theme" uid="uid://bmaaet3opnwik" path="res://ui/themes/bluesea.tres" id="3_inejg"]
 [ext_resource type="Texture2D" uid="uid://bykkgx2x66cf" path="res://assets/ships/Carrier/ShipCarrierHull.png" id="4_tpgc7"]
 [ext_resource type="Texture2D" uid="uid://cv3jmlpmkaep7" path="res://assets/ships/Cruiser/ShipCruiserHull.png" id="5_v887t"]
 [ext_resource type="Texture2D" uid="uid://dwv6ui0du8v1b" path="res://assets/ships/PatrolBoat/ShipPatrolHull.png" id="6_xlmth"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0hqgt"]
+shader = ExtResource("2_0q76x")
+shader_parameter/WATER_COL = Color(0.176471, 0.635294, 0.85098, 1)
+shader_parameter/WATER2_COL = Color(0.0588235, 0.529412, 0.776471, 1)
+shader_parameter/FOAM_COL = Color(0.87451, 0.988235, 1, 1)
+shader_parameter/distortion_speed = 2.0
+shader_parameter/tile = Vector2(5, 5)
+shader_parameter/offset = Vector2(0, 0)
+
+[sub_resource type="Gradient" id="Gradient_jc12w"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dutgh"]
+gradient = SubResource("Gradient_jc12w")
 
 [node name="PreBattleScreen" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_sthaj")
 
-[node name="PlayerBoard" parent="." instance=ExtResource("2_pppge")]
-position = Vector2(41, 19)
-scale = Vector2(1.5, 1.5)
+[node name="wave" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_0hqgt")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 576.0
+offset_bottom = 1024.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_dutgh")
 
-[node name="StartGameButton" type="Button" parent="."]
+[node name="PlayerBoard" parent="." instance=ExtResource("2_pppge")]
+position = Vector2(5, 5)
+scale = Vector2(1.6, 1.6)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("3_inejg")
+
+[node name="StartGameButton" type="Button" parent="Control"]
+layout_mode = 0
 offset_left = 335.0
 offset_top = 953.0
 offset_right = 559.0
@@ -23,30 +58,44 @@ offset_bottom = 1004.0
 disabled = true
 text = "Start Game"
 
-[node name="ShipButtonContainer" type="HBoxContainer" parent="."]
-offset_left = 53.0
-offset_top = 553.0
-offset_right = 385.0
-offset_bottom = 775.0
+[node name="Panel" type="Panel" parent="Control"]
+layout_mode = 0
+offset_left = 7.0
+offset_top = 582.0
+offset_right = 571.0
+offset_bottom = 825.0
+size_flags_horizontal = 0
 
-[node name="BattleshipButton" type="TextureButton" parent="ShipButtonContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/Panel"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="ShipButtonContainer" type="HBoxContainer" parent="Control/Panel/MarginContainer"]
+layout_mode = 2
+
+[node name="BattleshipButton" type="TextureButton" parent="Control/Panel/MarginContainer/ShipButtonContainer"]
 layout_mode = 2
 texture_normal = ExtResource("3_7lq2q")
 
-[node name="CarrierButton" type="TextureButton" parent="ShipButtonContainer"]
+[node name="CarrierButton" type="TextureButton" parent="Control/Panel/MarginContainer/ShipButtonContainer"]
 layout_mode = 2
 texture_normal = ExtResource("4_tpgc7")
 
-[node name="CruiserButton" type="TextureButton" parent="ShipButtonContainer"]
+[node name="CruiserButton" type="TextureButton" parent="Control/Panel/MarginContainer/ShipButtonContainer"]
 layout_mode = 2
 texture_normal = ExtResource("5_v887t")
 
-[node name="PatrolButton" type="TextureButton" parent="ShipButtonContainer"]
+[node name="PatrolButton" type="TextureButton" parent="Control/Panel/MarginContainer/ShipButtonContainer"]
 layout_mode = 2
 texture_normal = ExtResource("6_xlmth")
 
-[connection signal="pressed" from="StartGameButton" to="." method="_on_start_game_button_pressed"]
-[connection signal="pressed" from="ShipButtonContainer/BattleshipButton" to="." method="_on_battleship_button_pressed"]
-[connection signal="pressed" from="ShipButtonContainer/CarrierButton" to="." method="_on_carrier_button_pressed"]
-[connection signal="pressed" from="ShipButtonContainer/CruiserButton" to="." method="_on_cruiser_button_pressed"]
-[connection signal="pressed" from="ShipButtonContainer/PatrolButton" to="." method="_on_patrol_button_pressed"]
+[connection signal="pressed" from="Control/StartGameButton" to="." method="_on_start_game_button_pressed"]
+[connection signal="pressed" from="Control/Panel/MarginContainer/ShipButtonContainer/BattleshipButton" to="." method="_on_battleship_button_pressed"]
+[connection signal="pressed" from="Control/Panel/MarginContainer/ShipButtonContainer/CarrierButton" to="." method="_on_carrier_button_pressed"]
+[connection signal="pressed" from="Control/Panel/MarginContainer/ShipButtonContainer/CruiserButton" to="." method="_on_cruiser_button_pressed"]
+[connection signal="pressed" from="Control/Panel/MarginContainer/ShipButtonContainer/PatrolButton" to="." method="_on_patrol_button_pressed"]

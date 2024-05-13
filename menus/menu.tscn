@@ -14,10 +14,10 @@ shader_parameter/distortion_speed = 2.0
 shader_parameter/tile = Vector2(5, 5)
 shader_parameter/offset = Vector2(0, 0)
 
-[sub_resource type="Gradient" id="Gradient_0mp01"]
+[sub_resource type="Gradient" id="Gradient_j0kme"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_gx2ju"]
-gradient = SubResource("Gradient_0mp01")
+gradient = SubResource("Gradient_j0kme")
 
 [node name="Titltlescreen" type="Control"]
 layout_mode = 3
@@ -53,6 +53,7 @@ custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_constants/separation = 64
 alignment = 1
 
 [node name="Logo" type="TextureRect" parent="Menu/VBoxContainer"]
@@ -66,9 +67,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_3ieb5")
 theme_override_constants/separation = 8
-
-[node name="Seperator" type="Control" parent="Menu/VBoxContainer/VBoxContainer"]
-layout_mode = 2
 
 [node name="Start game" type="Button" parent="Menu/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 32)
@@ -89,72 +87,83 @@ custom_minimum_size = Vector2(120, 32)
 layout_mode = 2
 text = "Exit"
 
+[node name="HSeparator" type="HSeparator" parent="Menu/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="Options" type="MarginContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
+anchors_preset = -1
+anchor_left = 1.00868
+anchor_right = 2.00868
 anchor_bottom = 1.0
-offset_left = 581.0
-offset_right = 581.0
+offset_left = -1.52588e-05
+offset_right = -1.52588e-05
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Options"]
-custom_minimum_size = Vector2(500, 0)
+[node name="BackContainer" type="MarginContainer" parent="Options"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-alignment = 1
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Options/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_3ieb5")
-theme_override_constants/separation = 8
-
-[node name="Name" type="Label" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Name"
-
-[node name="Name_line" type="LineEdit" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="HOST" type="Label" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "HOST"
-
-[node name="Host_line" type="LineEdit" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="port" type="Label" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "port
-"
-
-[node name="Port_line" type="LineEdit" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="master_label" type="Label" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-text = "Mater volume"
-
-[node name="Volume_slider" type="HSlider" parent="Options/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-max_value = 1.0
-step = 0.001
-
-[node name="Back" type="Button" parent="Options/VBoxContainer/VBoxContainer"]
+[node name="Back" type="Button" parent="Options/BackContainer"]
 custom_minimum_size = Vector2(120, 32)
 layout_mode = 2
 text = "Back
 "
 
+[node name="ControlsContainer" type="MarginContainer" parent="Options"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Panel" type="Panel" parent="Options/ControlsContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Options/ControlsContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Options/ControlsContainer/MarginContainer"]
+custom_minimum_size = Vector2(460, 2.08165e-12)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+alignment = 1
+
+[node name="Name" type="Label" parent="Options/ControlsContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Player name"
+
+[node name="Name_line" type="LineEdit" parent="Options/ControlsContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HOST" type="Label" parent="Options/ControlsContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Server host address"
+
+[node name="Host_line" type="LineEdit" parent="Options/ControlsContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="port" type="Label" parent="Options/ControlsContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Server host port
+"
+
+[node name="Port_line" type="LineEdit" parent="Options/ControlsContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
 [connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Start game" to="." method="_on_start_game_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Search" to="." method="_on_search_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="Menu/VBoxContainer/VBoxContainer/Exit" to="." method="_on_exit_pressed"]
-[connection signal="text_changed" from="Options/VBoxContainer/VBoxContainer/Name_line" to="." method="_on_name_line_text_changed"]
-[connection signal="text_changed" from="Options/VBoxContainer/VBoxContainer/Host_line" to="." method="_on_host_line_text_changed"]
-[connection signal="text_changed" from="Options/VBoxContainer/VBoxContainer/Port_line" to="." method="_on_port_line_2_text_changed"]
-[connection signal="pressed" from="Options/VBoxContainer/VBoxContainer/Back" to="." method="_on_back_pressed"]
+[connection signal="pressed" from="Options/BackContainer/Back" to="." method="_on_back_pressed"]
+[connection signal="text_changed" from="Options/ControlsContainer/MarginContainer/VBoxContainer/Name_line" to="." method="_on_name_line_text_changed"]
+[connection signal="text_changed" from="Options/ControlsContainer/MarginContainer/VBoxContainer/Host_line" to="." method="_on_host_line_text_changed"]
+[connection signal="text_changed" from="Options/ControlsContainer/MarginContainer/VBoxContainer/Port_line" to="." method="_on_port_line_2_text_changed"]

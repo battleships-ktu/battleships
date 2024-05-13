@@ -22,7 +22,7 @@ func _input(event):
 			detach_ship_from_mouse()
 			ships_left -= 1
 			if ships_left == 0:
-				$StartGameButton.disabled = false
+				$Control/StartGameButton.disabled = false
 
 
 func _on_ready():
@@ -62,8 +62,6 @@ func detach_ship_from_mouse():
 
 
 func _on_start_game_button_pressed():
-	
-
 	var global_node = get_node("/root/Global")
 	global_node.ship_grid = board.ship_array
 	#global_node.enable_explosion = true
@@ -75,22 +73,22 @@ func _on_battleship_button_pressed():
 	#board.enable_explosion = true
 	var ship = preload("res://board/ships/battleship.tscn").instantiate()
 	selected_ship_id = 1
-	attach_ship_to_mouse(ship, $ShipButtonContainer/BattleshipButton)
+	attach_ship_to_mouse(ship, $Control/Panel/MarginContainer/ShipButtonContainer/BattleshipButton)
 
 
 func _on_carrier_button_pressed():
 	var ship = preload("res://board/ships/carrier.tscn").instantiate()
 	selected_ship_id = 2
-	attach_ship_to_mouse(ship, $ShipButtonContainer/CarrierButton)
+	attach_ship_to_mouse(ship, $Control/Panel/MarginContainer/ShipButtonContainer/CarrierButton)
 
 
 func _on_cruiser_button_pressed():
 	var ship = preload("res://board/ships/cruiser.tscn").instantiate()
 	selected_ship_id = 3
-	attach_ship_to_mouse(ship, $ShipButtonContainer/CruiserButton)
+	attach_ship_to_mouse(ship, $Control/Panel/MarginContainer/ShipButtonContainer/CruiserButton)
 
 
 func _on_patrol_button_pressed():
 	var ship = preload("res://board/ships/patrol.tscn").instantiate()
 	selected_ship_id = 4
-	attach_ship_to_mouse(ship, $ShipButtonContainer/PatrolButton)
+	attach_ship_to_mouse(ship, $Control/Panel/MarginContainer/ShipButtonContainer/PatrolButton)
