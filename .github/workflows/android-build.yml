@@ -1,5 +1,5 @@
 - name: Godot Android export
   uses: dulvui/godot-android-export@v4.0.0
   with:
-	working-directory: .
+	working-directory: ~/
 	godot-version: 4.2
