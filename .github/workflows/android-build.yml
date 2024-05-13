@@ -6,6 +6,6 @@ jobs:
       - name: godot-android-builder
         uses: croconut/godot-multi-builder@v1
         with:
-                    names: Android
+                    names: "Android"
                     path-to-game: ./
                     debug-mode: true
