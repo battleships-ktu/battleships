@@ -93,6 +93,7 @@ func try_place_ship(ship_selector, shipId):
 		for ship_col in ship_width:
 			board.ship_array[ship_row + target_y][ship_col + target_x] = shipId
 			global_node.tiles_left += 1;
+			global_node.enemy_tiles_left += 1;
 			
 	
 	#Spawn ship: create ship sprite (košė makalošė, bet idc)

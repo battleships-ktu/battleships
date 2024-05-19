@@ -9,13 +9,16 @@
 resource_name = "defeat"
 script/source = "extends Node2D
 @onready var global_node = get_node(\"/root/Global\")
+@onready var client = get_node(\"/root/TCPClient\")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Lose.play()
 	$Info.text  = \"Total shots: {0}\\n\".format([global_node.fired_shots])
-	$Info.text += \"       Hits: {0}\\n\".format([global_node.missed_shots])
-	$Info.text += \"     Misses: {0}\\n\".format([global_node.hit_shots])
+	$Info.text += \"       Hits: {0}\\n\".format([global_node.hit_shots])
+	$Info.text += \"     Misses: {0}\\n\".format([global_node.missed_shots])
+	OS.delay_msec(1000)
+	client.disconnect_from_host()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
