@@ -128,15 +128,10 @@ func _create_room():
 		_client.game_state = _client.GameState.ATTACK
 		get_tree().change_scene_to_file("res://board/pre_battle.tscn")
 
-
-
-
-
 func _initial_start():
 	Status=0
 	_connect()
 
-
-
 func _on_cancel_pressed():
+	_client.disconnect_from_host()
 	get_tree().change_scene_to_file("res://menus/menu.tscn")

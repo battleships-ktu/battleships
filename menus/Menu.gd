@@ -18,11 +18,9 @@ var menu_stackii := []
 func _ready() -> void:
 	#get_tree().change_scene_to_file("res://menus/options_menu.tscn")
 	if DATA.NAME == "":
-		DATA.NAME="PLayer"
+		DATA.NAME="Player"
 	if DATA.HOST == "":
-		DATA.HOST="localhost" 
-	if DATA.HOST == "":
-		DATA.HOST="localhost" 
+		DATA.HOST="localhost"
 	if DATA.PORT == 0:
 		DATA.PORT=24845
 
