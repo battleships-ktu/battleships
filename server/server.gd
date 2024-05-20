@@ -40,8 +40,11 @@ func _process(_delta: float) -> void:
 		if available_bytes > 0:
 			var buffer = _stream.get_partial_data(available_bytes)
 			var byte_buffer = PackedByteArray(buffer[1])
-			var data = parse_response(byte_buffer.get_string_from_utf8())
-			response.emit(data)
+			var unparsed_response = byte_buffer.get_string_from_utf8()
+			var string_packets = Array(unparsed_response.split("\n", false))
+			for packet in string_packets:
+				var data = parse_response(packet)
+				response.emit(data)
 				
 func is_online() -> bool:
 	return _status == _stream.STATUS_CONNECTED

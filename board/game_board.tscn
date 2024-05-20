@@ -111,9 +111,6 @@ func _respond_to_enemy_hit(x, y):
 			client.send(\"1;1\") # emili plz fix
 			get_tree().change_scene_to_file(\"res://finish/defeat.tscn\")
 	else:
-		# NOTE: CIA ZIAURUS HACKAS SITA GAME STATE PAKEISTI JEI KAS ATEITI 
-		# TAISYSIT TAI AS SORRY ZIAURIAI SENI NES AS PATS NESUPRANTU KAIP VEIKIA
-		game_state = GameState.RESPOND 
 		client.send(\"1;0\")
 		player_board.miss_tile(Vector2i(x,y))
 		missed.play()
@@ -174,7 +171,6 @@ func handle_game_response():
 					global_node.enemy_tiles_left -= 1
 					if global_node.enemy_tiles_left == 0:
 						get_tree().change_scene_to_file(\"res://finish/victory.tscn\")
-						client.disconnect_from_host()
 		_:
 			# Zaidimas arba neprasidejes arba baigesi
 			print(\"Server error, but got game response from server\")
