@@ -20,6 +20,7 @@ func _ready():
 	$Info.text += \"     Misses: {0}\\n\".format([global_node.missed_shots])
 	OS.delay_msec(1000)
 	client.disconnect_from_host()
+	global_node.reset()
 	$Button.disabled = false;
 
 
