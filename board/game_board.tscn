@@ -89,41 +89,34 @@ func _on_strike(c):
 	if (game_state != GameState.ATTACK):
 		# Tai galima siusti tik, kai turi siunti bomba
 		return
-	OS.delay_msec(50)
 	# Siusti koordinates kur saunama, pirmas response success, antras
 	# grazinamas kai gaunamas response is oponento ar pataike
 	last_shot_coords = c
 	client.send(\"0;%s;%s\" % [c.x, c.y])
-	if c != Vector2i(42, 42):
-		fire.play()
-		global_node.fired_shots += 1;
+	fire.play()
+	global_node.fired_shots += 1;
 
 
 func _respond_to_enemy_hit(x, y):
 	if !client.is_online():
 		return
 	if (game_state != GameState.RESPOND):
-		# Tai galima siusti tik, kai zaidejas turi atsakyti ar oponentas pataikez
 		return
-		
-	if (x == 42 && y == 42): # Hackas
-		client.send(\"1;0\")
-		should_pass_turn = false
-		return
-		
 	if player_board.ship_array[y][x] != 0:
 		player_board.hit_tile(Vector2i(x,y))
 		global_node.tiles_left -= 1
+		client.send(\"1;1\")
+		game_state = GameState.AWAIT_ATTACK
 		if global_node.tiles_left == 0:
 			client.send(\"1;1\") # emili plz fix
 			get_tree().change_scene_to_file(\"res://finish/defeat.tscn\")
-			
-		client.send(\"1;1\")
-		should_pass_turn = true
 	else:
-		player_board.miss_tile(Vector2i(x,y))
+		# NOTE: CIA ZIAURUS HACKAS SITA GAME STATE PAKEISTI JEI KAS ATEITI 
+		# TAISYSIT TAI AS SORRY ZIAURIAI SENI NES AS PATS NESUPRANTU KAIP VEIKIA
+		game_state = GameState.RESPOND 
 		client.send(\"1;0\")
-		should_pass_turn = false
+		player_board.miss_tile(Vector2i(x,y))
+		missed.play()
 
 
 func handle_game_response():
@@ -139,10 +132,6 @@ func handle_game_response():
 			if lastData[0] != \"0\":
 				return
 			game_state = GameState.ATTACK
-			if should_pass_turn:
-				# Čia yra belekoks hackas, nes emilio serveris neleidzia dvieju ataku is eiles daryt
-				# tai tiesiog per prievarta darom ataka i neegzistuojancias koordinates
-				_on_strike(Vector2i(42,42))
 		GameState.AWAIT_ATTACK:
 			if lastData[0] != \"2\":
 				# Serveris visada turetu grazinti kokia informacija,
@@ -172,21 +161,13 @@ func handle_game_response():
 			# Response values: 0 - not hit; 1 - hit; 2 - game end
 			# jei 2, uzbaigti zaidima ir zaidejes gaves si response laimejo
 			match lastData[2]:
-				\"0\":
-					if last_shot_coords == Vector2i(42, 42):
-						#print(\"Skipping turn\")
-						should_pass_turn = false
-						game_state = GameState.AWAIT_ATTACK
-						return
-						
-					#print(\"Sent shot didn't hit\")
+				\"0\": #you missed
+					game_state = GameState.AWAIT_ATTACK
 					missed.play()
 					enemy_board.miss_tile(last_shot_coords)
-					game_state = GameState.AWAIT_ATTACK
 					global_node.missed_shots += 1;
-					should_pass_turn = true
-				\"1\":
-					#print(\"Sent shot hit\")
+				\"1\": #you hit
+					game_state = GameState.ATTACK
 					explosion_sound.play()
 					enemy_board.hit_tile(last_shot_coords)
 					global_node.hit_shots += 1;
@@ -194,8 +175,6 @@ func handle_game_response():
 					if global_node.enemy_tiles_left == 0:
 						get_tree().change_scene_to_file(\"res://finish/victory.tscn\")
 						client.disconnect_from_host()
-					game_state = GameState.AWAIT_ATTACK
-					should_pass_turn = false
 		_:
 			# Zaidimas arba neprasidejes arba baigesi
 			print(\"Server error, but got game response from server\")
