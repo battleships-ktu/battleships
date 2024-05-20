@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bcrwwf23mm57c"]
+[gd_scene load_steps=7 format=3 uid="uid://bcrwwf23mm57c"]
 
 [ext_resource type="Texture2D" uid="uid://drx5u3lfj4stl" path="res://finish/victory.jpeg" id="1_7f5lg"]
 [ext_resource type="FontFile" uid="uid://ccxnv8q4bwpfg" path="res://Vampire Wars.ttf" id="2_66425"]
 [ext_resource type="FontVariation" uid="uid://beb3qvqoyrr5b" path="res://finish.tres" id="3_8hpns"]
 [ext_resource type="AudioStream" uid="uid://ebitq5ehk856" path="res://sounds/win.mp3" id="4_4uheg"]
+[ext_resource type="Theme" uid="uid://bmaaet3opnwik" path="res://ui/themes/bluesea.tres" id="5_1vl7g"]
 
 [sub_resource type="GDScript" id="GDScript_18h0e"]
 resource_name = "victory"
@@ -19,11 +20,16 @@ func _ready():
 	$Info.text += \"     Misses: {0}\\n\".format([global_node.missed_shots])
 	OS.delay_msec(1000)
 	client.disconnect_from_host()
+	$Button.disabled = false;
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
+
+
+func _on_button_pressed():
+	get_tree().change_scene_to_file(\"res://menus/menu.tscn\")
 "
 
 [node name="Victory" type="Node2D"]
@@ -55,3 +61,14 @@ bbcode_enabled = true
 
 [node name="Win" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("4_4uheg")
+
+[node name="Button" type="Button" parent="."]
+offset_left = 389.0
+offset_top = 892.0
+offset_right = 541.0
+offset_bottom = 976.0
+theme = ExtResource("5_1vl7g")
+disabled = true
+text = "EXIT"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
