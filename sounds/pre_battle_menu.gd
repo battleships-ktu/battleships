@@ -8,14 +8,20 @@ var selected_ship
 var selected_ship_id
 var saved_button
 var ships_left = 4
-	
+var last_click_time = 0.0
+var double_click_threshold = 0.3  # Adjust this value to your needs
+
 func _input(event):
 	
 	if not selected_ship:
 		return
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.is_pressed():
-		board.enable_explosion = false
-		selected_ship.rotate_ship()
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
+		var current_time = Time.get_ticks_msec() / 1000.0
+		if current_time - last_click_time < double_click_threshold:
+			# Detected a double click
+			board.enable_explosion = false
+			selected_ship.rotate_ship()
+		last_click_time = current_time
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.is_pressed():
 		board.enable_explosion = false
 		if selected_ship.try_place_ship(selected_ship, selected_ship_id):
