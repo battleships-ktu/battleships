@@ -106,6 +106,7 @@ func _respond_to_enemy_hit(x, y):
 		player_board.hit_tile(Vector2i(x,y))
 		global_node.tiles_left -= 1
 		client.send(\"1;1\")
+		explosion_sound.play()
 		game_state = GameState.AWAIT_ATTACK
 		if global_node.tiles_left == 0:
 			client.send(\"1;1\") # emili plz fix
@@ -265,10 +266,12 @@ autostart = true
 stream = ExtResource("6_ngicy")
 volume_db = -14.258
 pitch_scale = 2.81
+max_polyphony = 10
 
 [node name="Cannon_fire" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("7_d2asf")
 volume_db = -5.871
+max_polyphony = 10
 
 [node name="Missed_fire" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("8_1crjm")
